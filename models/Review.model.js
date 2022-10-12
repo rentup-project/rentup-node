@@ -20,7 +20,7 @@ const ReviewSchema = new mongoose.Schema(
         type: String,
         required: [true, 'Give a title to your review'],
         minLength: [5, 'The title must have at least 5 characters']
-    }
+    },
     comment: {
         type: String,
         required: [true, 'Comment your review'],
