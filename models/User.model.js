@@ -83,6 +83,27 @@ userSchema.virtual("property", {
     justOne: true,
 });
 
+userSchema.virtual("favorite", {
+  ref: "Favorite",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
+
+userSchema.virtual("rent", {
+  ref: "Rent",
+  localField: "_id",
+  foreignField: "userWhoRents",
+  justOne: true,
+});
+
+userSchema.virtual("reservation", {
+  ref: "Reservation",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
+
 UserSchema.pre('save', function(next) {
   if (this.isModified('password')) {
     bcrypt.hash(this.password, ROUNDS)

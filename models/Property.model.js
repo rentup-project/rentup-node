@@ -32,6 +32,14 @@ const PropertySchema = new mongoose.Schema(
         type: String,
         required: [true, 'Zip code is required']
     },
+    lat: {
+        type: String,
+        required: [true, 'Latitude is required']
+    },
+    long: {
+        type: String,
+        required: [true, 'Longitude is required']
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -39,6 +47,14 @@ const PropertySchema = new mongoose.Schema(
     pricePerMonth: {
         type: Number,
         required: [true, 'Price per month is required']
+    },
+    reservationPrice: {
+        type: Number,
+        required: [true, 'Reservation price is required']
+    },
+    reserved: {
+        type: Boolean,
+        default: false
     },
     buildingType: {
         type: String,
@@ -115,6 +131,27 @@ const PropertySchema = new mongoose.Schema(
     }
   }
 );
+
+propertySchema.virtual("favorite", {
+    ref: "Favorite",
+    localField: "_id",
+    foreignField: "property",
+    justOne: true,
+});
+
+propertySchema.virtual("rent", {
+    ref: "Rent",
+    localField: "_id",
+    foreignField: "property",
+    justOne: true,
+});
+
+propertySchema.virtual("reservation", {
+    ref: "Reservation",
+    localField: "_id",
+    foreignField: "property",
+    justOne: true,
+});
 
 const Property = mongoose.model('Property', PropertySchema);
 
