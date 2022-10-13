@@ -35,8 +35,7 @@ const UserSchema = new mongoose.Schema(
         default: 'tenant'
     },
     phoneNumber: {
-        type: String,
-        required: [true, 'Phone number is required']
+        type: String
     },
     annualSalary: {
         type: String,
