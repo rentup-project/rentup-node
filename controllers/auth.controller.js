@@ -7,7 +7,7 @@ module.exports.signup = (req, res, next) => {
   User.create(req.body)
     .then((user) => {
       mailer.sendActivationMail(user.email, user.activationToken);
-      res.status(201).json(user)
+      res.status(201).json(user)    
     })
     .catch(next);
 };

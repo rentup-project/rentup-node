@@ -1,7 +1,9 @@
 const router = require('express').Router();
+const passport = require('passport');
 const userController = require('../controllers/user.controller');
 const authController = require("../controllers/auth.controller");
 const authMiddleware = require('../middlewares/auth.middleware');
+const SCOPES = ["profile", "email"];
 
 //HOME
 router.get("/", (req, res, next) => res.json({ ok: true }));
