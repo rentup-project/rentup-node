@@ -14,8 +14,8 @@ const ObservationSchema = new mongoose.Schema(
         type: [String],
     },
     actionNeeded: {
-        type: Boolean,
-        default: false
+        type: String,
+        enum: ['no action needed', 'action needed']
     },
   },
   {

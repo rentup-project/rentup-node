@@ -30,8 +30,9 @@ const UserSchema = new mongoose.Schema(
     },
     type: {
         type: String,
-        enum: ['owner', 'tenant', 'both'],
-        required: true
+        enum: ['tenant', 'tenant&owner'],
+        required: true,
+        default: 'tenant'
     },
     phoneNumber: {
         type: String,
@@ -76,28 +77,28 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-userSchema.virtual("property", {
+UserSchema.virtual("property", {
     ref: "Property",
     localField: "_id",
     foreignField: "owner",
     justOne: true,
 });
 
-userSchema.virtual("favorite", {
+UserSchema.virtual("favorite", {
   ref: "Favorite",
   localField: "_id",
   foreignField: "user",
   justOne: true,
 });
 
-userSchema.virtual("rent", {
+UserSchema.virtual("rent", {
   ref: "Rent",
   localField: "_id",
   foreignField: "userWhoRents",
   justOne: true,
 });
 
-userSchema.virtual("reservation", {
+UserSchema.virtual("reservation", {
   ref: "Reservation",
   localField: "_id",
   foreignField: "user",
