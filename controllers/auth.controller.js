@@ -23,10 +23,9 @@ module.exports.activateAccount = (req, res, next) => {
   )
     .then((user) => {
       if (user) {
-        res.json({ message: "You have activated your account. Thanks for joining our team!"});
+        res.send(202);
       } else {
-        res.json({ message: "User not found",
-        });
+        res.send(401);
       }
     })
     .catch(next);
