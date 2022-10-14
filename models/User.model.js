@@ -9,70 +9,74 @@ const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'User name is required']
+      required: [true, "User name is required"],
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
-      match: [EMAIL_PATTERN, 'Email is not valid'],
+      required: [true, "Email is required"],
+      match: [EMAIL_PATTERN, "Email is not valid"],
       trim: true,
       lowercase: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, "Password is required"],
       minlength: 8,
     },
     image: {
-        type: String,
-        default: 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
+      type: String,
+      default:
+        "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
     },
     type: {
-        type: String,
-        enum: ['tenant', 'tenant&owner'],
-        required: true,
-        default: 'tenant'
+      type: String,
+      enum: ["tenant", "tenant&owner"],
+      required: true,
+      default: "tenant",
     },
     phoneNumber: {
-        type: String
+      type: String,
     },
     annualSalary: {
-        type: String,
-        enum: ['<20K', '<30K', '<40K', '<50K', '<60K', '<70K', '>70K']
+      type: String,
+      enum: ["select", "<20K", "<30K", "<40K", "<50K", "<60K", "<70K", ">70K"],
     },
     jobDuration: {
-        type: String,
-        enum: ['less than 3 months', 'less then a year', 'more than a year']
+      type: String,
+      enum: [
+        "select",
+        "less than 3 months",
+        "less then a year",
+        "more than a year",
+      ],
     },
     status: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     googleID: {
-        type: String,
+      type: String,
     },
     activationToken: {
-        type: String,
-        default: () => {
-          return (
-            Math.random().toString(36).substring(7)
-          );
-        },
-    }
+      type: String,
+      default: () => {
+        return Math.random().toString(36).substring(7);
+      },
+    },
   },
   {
     timestamps: true,
     toJSON: {
-        virtuals: true,
-        transform: (doc, ret) => {
-            delete ret.__v;
-            delete ret._id;
-            delete ret.password;
+      virtuals: true,
+      transform: (doc, ret) => {
+        delete ret.__v;
+        delete ret._id;
+        delete ret.password;
 
-            return ret
-        }
-    }
+        return ret;
+      },
+    },
   }
 );
 

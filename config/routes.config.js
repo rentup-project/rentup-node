@@ -10,7 +10,7 @@ const SCOPES = ["profile", "email"];
 router.get("/", (req, res, next) => res.json({ ok: true }));
 
 //AUTH
-router.post("/signup", authController.signup);
+router.post("/register", authController.register);
 router.get("/activate/:token", authController.activateAccount);
 router.post("/login", authController.login);
 router.get("/login/google", passport.authenticate("google-auth", { scope: SCOPES }));
