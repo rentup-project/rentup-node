@@ -79,7 +79,3 @@ module.exports.loginGoogle = (req, res, next) => {
     failureRedirect: `${process.env.CLIENT_URL}login`
   });
 };
-
-module.exports.logout = (req, res, next) => {
-  req.logout(() => res.redirect(process.env.CLIENT_URL));
-};

@@ -13,11 +13,10 @@ router.get("/", (req, res, next) => res.json({ ok: true }));
 router.post("/register", authController.register);
 router.get("/activate/:token", authController.activateAccount);
 router.post("/login", authController.login);
-router.get("/login/google", passport.authenticate("google-auth", { scope: SCOPES }));
-router.get("/auth/google/callback", authController.loginGoogle);
-router.get("/logout", authController.logout)
+// router.get("/login/google", passport.authenticate("google-auth", { scope: SCOPES }));
+// router.get("/auth/google/callback", authController.loginGoogle);
 
-//USERS
-router.get("/users/me", userController.getCurrentUser);
+//USER
+router.get("/users/me", authMiddleware.isAuthenticated, userController.getCurrentUser);
 
 module.exports = router;
