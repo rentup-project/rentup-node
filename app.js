@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+
 const express = require('express');
 const mongoose = require('mongoose');
 const logger = require('morgan');
@@ -9,6 +10,7 @@ const cors = require("cors");
 
 require('./config/db.config');
 
+require('./config/passport.config')
 const app = express();
 
 app.use(cors());

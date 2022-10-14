@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const mailer = require('../config/mailer.config');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
+const passport = require('passport')
 
 module.exports.signup = (req, res, next) => {
   User.create(req.body)
@@ -72,7 +73,12 @@ module.exports.login = (req, res, next) => {
 }
 
 module.exports.loginGoogle = (req, res, next) => {
-  login(req, res, next, "google-auth");
+  passport.authenticate('google', {
+    successRedirect: process.env.CLIENT_URL,
+    failureRedirect: `${process.env.CLIENT_URL}login`
+  });
 };
 
-  
+module.exports.logout = (req, res, next) => {
+  req.logout(() => res.redirect(process.env.CLIENT_URL));
+};
