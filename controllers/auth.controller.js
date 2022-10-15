@@ -1,15 +1,15 @@
-const createError = require('http-errors');
-const mailer = require('../config/mailer.config');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User.model');
-const passport = require('passport');
+const createError = require("http-errors");
+const mailer = require("../config/mailer.config");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User.model");
+const passport = require("passport");
 
 module.exports.register = (req, res, next) => {
-  console.log('entra en el back', req.body)
+  console.log("entra en el back", req.body);
   User.create(req.body)
     .then((user) => {
       mailer.sendActivationMail(user.email, user.activationToken);
-      res.status(201).json(user)    
+      res.status(201).json(user);
     })
     .catch(next);
 };
@@ -34,47 +34,50 @@ module.exports.activateAccount = (req, res, next) => {
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
-  const LoginError = createError(401, 'Invalid credentials');
+  const LoginError = createError(401, "Invalid credentials");
 
   if (!email || !password) {
     next(LoginError);
   } else {
     User.findOne({ email })
-      .then(user => {
+      .then((user) => {
         if (!user) {
-          next(LoginError); 
+          next(LoginError);
         } else {
-          if(user.status){
-          user.checkPassword(password) 
-            .then(result => {
-              if (!result) {
-                next(LoginError); 
-              } else {
-                const token = jwt.sign(
-                  {
-                    id: user.id,
-                  },
+          if (user.status) {
+            user
+              .checkPassword(password)
+              .then((result) => {
+                if (!result) {
+                  next(LoginError);
+                } else {
+                  const token = jwt.sign(
+                    {
+                      id: user.id,
+                    },
                     process.env.JWT_SECRET,
-                  {
-                    expiresIn: '1d'
-                  }
-                )
-                res.json({ accessToken: token });
-              }
-            })
-            .catch(next)
+                    {
+                      expiresIn: "1d",
+                    }
+                  );
+                  res.json({ accessToken: token });
+                }
+              })
+              .catch(next);
           } else {
-            next(createError(401, "You must activate your account first. Please, check your email."))            
+            next(
+              createError(
+                401,
+                "You must activate your account first. Please, check your email."
+              )
+            );
           }
         }
       })
-      .catch(next)
+      .catch(next);
   }
-}
+};
 
 module.exports.loginGoogle = (req, res, next) => {
-  passport.authenticate('google', {
-    successRedirect: process.env.CLIENT_URL,
-    failureRedirect: `${process.env.CLIENT_URL}login`
-  });
+  passport.authenticate("google-auth", res.redirect(process.env.CLIENT_URL));
 };

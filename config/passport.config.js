@@ -46,8 +46,7 @@ passport.use(
               password: mongoose.Types.ObjectId(),
               image,
               status: true,
-            })
-            .then((createdUser) => {
+            }).then((createdUser) => {
               next(null, createdUser);
             });
           })
