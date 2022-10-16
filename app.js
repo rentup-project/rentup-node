@@ -5,13 +5,13 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
-const cors = require("./config/cors.config");
+const cors = require("cors");
 require("./config/db.config");
-
 require("./config/passport.config");
+
 const app = express();
 
-app.use(cors);
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 
