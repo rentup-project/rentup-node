@@ -13,7 +13,7 @@ module.exports.getOneProperty = (req, res, next) => {
 module.exports.getAllProperties = (req, res, next) => {
     const { city } = req.params;
 
-    Property.find({ address: { $regex: city } })
+    Property.find({ address: { $regex: city, $options: "i" } })
       .then((props) => {
         res.status(201).json(props);
       })
