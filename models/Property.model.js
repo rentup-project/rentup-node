@@ -26,63 +26,67 @@ const PropertySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    address: {
+      type: String,
+      required: [true, "Address is required"]
+    },
     lat: {
       type: String,
-      required: [true, "Latitude is required"],
+      required: [true, "Latitude is required"]
     },
     long: {
       type: String,
-      required: [true, "Longitude is required"],
+      required: [true, "Longitude is required"]
     },
     addressVisibility: {
       type: String,
       enum: ["show full address", "show street only"],
-      required: [true, "Address visibility is required"],
+      required: [true, "Address visibility is required"]
     },
     availabilityDate: {
       type: Date,
-      required: [true, "Availability date is required"],
+      required: [true, "Availability date is required"]
     },
     propertyType: {
       type: String,
       enum: ["house", "apartment"],
-      required: [true, "Type is required"],
+      required: [true, "Type is required"]
     },
     houseType: {
       type: String,
       enum: ["detached house", "single family house", "semi-detached house"],
-      required: [true, "Type is required"],
+      required: [true, "Type is required"]
     },
     apartmentType: {
       type: String,
       enum: ["apartment", "penthouse", "duplex", "studio", "loft"],
-      required: [true, "Type is required"],
+      required: [true, "Type is required"]
     },
     squaredMeters: {
       type: Number,
-      required: [true, "Squared meters are required"],
+      required: [true, "Squared meters are required"]
     },
     bedroom: {
       type: String,
-      enum: ["studio", "1", "2", "3", "4 or more"],
+      enum: ["studio", "1", "2", "3", "4 or more"]
     },
     bathroom: {
       type: String,
-      enum: ["1", "2", "3", "4 or more"],
+      enum: ["1", "2", "3", "4 or more"]
     },
     orientation: {
       type: String,
       enum: ["exterior", "interior"],
-      required: [true, "Orientation is required"],
+      required: [true, "Orientation is required"]
     },
     furniture: {
       type: String,
-      enum: ["not furnished", "only kitchen", "fully furnished"],
+      enum: ["not furnished", "only kitchen", "fully furnished"]
     },
     floor: {
       type: String,
       enum: ["first", "in between", "last"],
-      required: [true, "Floor is required"],
+      required: [true, "Floor is required"]
     },
     features: {
       type: String,
@@ -101,7 +105,7 @@ const PropertySchema = new mongoose.Schema(
         "playground",
         "spa",
         "patio",
-      ]
+      ],
     },
     requiredJobDuration: {
       type: String,
