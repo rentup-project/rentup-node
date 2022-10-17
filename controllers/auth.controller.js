@@ -5,7 +5,6 @@ const User = require("../models/User.model");
 const passport = require("passport");
 
 module.exports.register = (req, res, next) => {
-  console.log("entra en el back", req.body);
   User.create(req.body)
     .then((user) => {
       mailer.sendActivationMail(user.email, user.activationToken);
