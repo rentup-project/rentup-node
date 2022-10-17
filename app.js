@@ -30,7 +30,7 @@ app.use((error, req, res, next) => {
   } else if (error instanceof mongoose.Error.CastError) {
     error = createError(404, "Resource not found");
   } else if (error.message.includes("E11000")) {
-    error = createError(400, "Already exists");
+    error = createError(400, "Email already exists. Login to your account.");
   } else if (error instanceof jwt.JsonWebTokenError) {
     error = createError(401, error);
   } else if (!error.status) {
