@@ -24,7 +24,6 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  console.log("error entra", error);
   if (error instanceof mongoose.Error.ValidationError) {
     error = createError(400, error);
   } else if (error instanceof mongoose.Error.CastError) {
