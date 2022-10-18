@@ -61,7 +61,7 @@ const PropertySchema = new mongoose.Schema(
     },
     furniture: {
       type: String,
-      enum: ["Not furnished", "Only kitchen", "Fully furnished"],
+      enum: ["Not furnished", "Only kitchen furnished", "Fully furnished"],
     },
     floor: {
       type: String,
