@@ -2,114 +2,94 @@ const mongoose = require('mongoose');
 
 const PropertySchema = new mongoose.Schema(
   {
-    /*     street: {
-      type: String,
-      required: [true, "Street is required"],
-    },
-    streetNumber: {
-      type: Number,
-      required: [true, "Street number number is required"],
-    },
-    city: {
-      type: String,
-      required: [true, "City is required"],
-    },
-    neighborhood: {
-      type: String,
-      required: [true, "Neighborhood is required"],
-    },
-    zipCode: {
-      type: String,
-      required: [true, "Zip code is required"],
-    }, */
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
     address: {
       type: String,
-      required: [true, "Address is required"]
+      required: [true, "Address is required"],
     },
     lat: {
       type: String,
-      required: [true, "Latitude is required"]
+      required: [true, "Latitude is required"],
     },
     long: {
       type: String,
-      required: [true, "Longitude is required"]
+      required: [true, "Longitude is required"],
     },
     addressVisibility: {
       type: String,
-      enum: ["show full address", "show street only"],
-      required: [true, "Address visibility is required"]
+      enum: ["Show full address", "Show street only"],
+      required: [true, "Address visibility is required"],
     },
     availabilityDate: {
       type: Date,
-      required: [true, "Availability date is required"]
+      required: [true, "Availability date is required"],
     },
     propertyType: {
       type: String,
-      enum: ["house", "apartment"],
-      required: [true, "Type is required"]
+      enum: ["House", "Apartment"],
+      required: [true, "Type is required"],
     },
     houseType: {
       type: String,
-      enum: ["detached house", "single family house", "semi-detached house"],
-      required: [true, "Type is required"]
+      enum: ["Detached house", "Single family house", "Semi-detached house"],
+      required: [true, "Type is required"],
     },
     apartmentType: {
       type: String,
-      enum: ["apartment", "penthouse", "duplex", "studio", "loft"],
-      required: [true, "Type is required"]
+      enum: ["Apartment", "Penthouse", "Duplex", "Studio", "Loft"],
+      required: [true, "Type is required"],
     },
     squaredMeters: {
       type: Number,
-      required: [true, "Squared meters are required"]
+      required: [true, "Squared meters are required"],
     },
     bedroom: {
       type: String,
-      enum: ["studio", "1", "2", "3", "4 or more"]
+      enum: ["Studio", "1", "2", "3", "4 or more"],
     },
     bathroom: {
       type: String,
-      enum: ["1", "2", "3", "4 or more"]
+      enum: ["1", "2", "3", "4 or more"],
     },
     orientation: {
       type: String,
-      enum: ["exterior", "interior"],
-      required: [true, "Orientation is required"]
+      enum: ["Exterior", "Interior"],
+      required: [true, "Orientation is required"],
     },
     furniture: {
       type: String,
-      enum: ["not furnished", "only kitchen", "fully furnished"]
+      enum: ["Not furnished", "Only kitchen", "Fully furnished"],
     },
     floor: {
       type: String,
-      enum: ["first", "in between", "last"],
-      required: [true, "Floor is required"]
+      enum: ["First", "In between", "Last"],
+      required: [true, "Floor is required"],
     },
     features: {
-      type: String,
+      type: [String],
       enum: [
-        "pool",
-        "air conditioning",
-        "lyft",
-        "built-in cabinets",
-        "boxroom",
-        "parking",
-        "balcony",
-        "terrace",
-        "garden",
+        "Pool",
+        "Air conditioning",
+        "Lyft",
+        "Built-in cabinets",
+        "Boxroom",
+        "Parking",
+        "Balcony",
+        "Terrace",
+        "Garden",
         "24-hour-security",
-        "gym",
-        "playground",
-        "spa",
-        "patio",
-      ],
+        "Gym",
+        "Playground",
+        "Spa",
+        "Patio",
+      ]
     },
     requiredJobDuration: {
       type: String,
-      enum: ["less than 3 months", "less then a year", "more than a year"],
+      enum: ["Less than 3 months", "Less then a year", "More than a year"],
     },
     requiredAnnualSalary: {
       type: String,
@@ -121,7 +101,7 @@ const PropertySchema = new mongoose.Schema(
     },
     heating: {
       type: String,
-      enum: ["individual-electric", "central", "individual-gas"],
+      enum: ["Individual-electric", "Central", "Individual-gas"],
     },
     images: {
       type: Array,
