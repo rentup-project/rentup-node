@@ -47,12 +47,12 @@ const PropertySchema = new mongoose.Schema(
       required: [true, "Squared meters are required"],
     },
     bedroom: {
-      type: String,
-      enum: ["Studio", "1", "2", "3", "4 or more"],
+      type: Number,
+      required: [true, "Number of bedrooms is required"],
     },
     bathroom: {
-      type: String,
-      enum: ["1", "2", "3", "4 or more"],
+      type: Number,
+      required: [true, "Number of bathrooms is required"],
     },
     orientation: {
       type: String,
@@ -85,7 +85,7 @@ const PropertySchema = new mongoose.Schema(
         "Playground",
         "Spa",
         "Patio",
-      ]
+      ],
     },
     requiredJobDuration: {
       type: String,

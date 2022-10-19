@@ -2,8 +2,8 @@
     {
         "owner":"6347fff4ba7e76a078ab8c3f",
         "address": "Calle de Alcalá, 388, Madrid, España",
-        "lat": 40.7127837, 
-        "long": -74.0059413,
+        "lat": 40.436464, 
+        "long": -3.640934,
         "addressVisibility":"Show street only",
         "availabilityDate":"6/7/2023",
         "propertyType":"House",
@@ -177,8 +177,8 @@
     {
         "owner":"6347fff4ba7e76a078ab8c3f",
         "address":"Calle Ramón Calabuig, 22, Madrid, España",
-        "lat": 40.394613,
-        "long": 3.670286,
+        "lat": 40.394645,  
+        "long": -3.670245,
         "addressVisibility":"Show full address",
         "availabilityDate":"6/29/2023",
         "propertyType":"Apartment",
@@ -211,11 +211,11 @@
         "petAllowed":false,
         "heating":"Central",
         "images": [
-            "https://res.cloudinary.com/marinalboni/image/upload/v1665929550/Rentup/House_Room_Dataset/LivingRoom/living_55_kscn4e.jpg",
-            "https://res.cloudinary.com/marinalboni/image/upload/v1665929474/Rentup/House_Room_Dataset/Kitchen/kitchen_237_wisdks.jpg",
-            "https://res.cloudinary.com/marinalboni/image/upload/v1665929355/Rentup/House_Room_Dataset/Dinning/din_61_aj5sl3.jpg",
-            "https://res.cloudinary.com/marinalboni/image/upload/v1665929142/Rentup/House_Room_Dataset/Bedroom/bed_776_vy5tfm.jpg",
-            "https://res.cloudinary.com/marinalboni/image/upload/v1665928220/Rentup/House_Room_Dataset/Bathroom/bath_81_lc3hzu.jpg"
+            "https://res.cloudinary.com/marinalboni/image/upload/v1666188485/Rentup/House_Room_Dataset/H1/paris_1_mhmjiy.webp",
+            "https://res.cloudinary.com/marinalboni/image/upload/v1666188608/Rentup/House_Room_Dataset/H1/paris_2_rlr9ms.webp",
+            "https://res.cloudinary.com/marinalboni/image/upload/v1666188608/Rentup/House_Room_Dataset/H1/paris_3_h2ccq1.webp",
+            "https://res.cloudinary.com/marinalboni/image/upload/v1666188608/Rentup/House_Room_Dataset/H1/paris_4_hjreik.webp",
+            "https://res.cloudinary.com/marinalboni/image/upload/v1666188608/Rentup/House_Room_Dataset/H1/paris_5_adqvgp.webp"
         ],
         "monthlyRent":1738,
         "bailDeposit":778,
