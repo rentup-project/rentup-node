@@ -4,6 +4,7 @@ const userController = require("../controllers/user.controller");
 const authController = require("../controllers/auth.controller");
 const propertyController = require("../controllers/property.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
+const accountController = require('../controllers/account.controller');
 
 const SCOPES = ["profile", "email"];
 
@@ -23,5 +24,10 @@ router.get("/users/me", authMiddleware.isAuthenticated, userController.getCurren
 //PROPERTIES
 router.get("/property/:id", propertyController.getOneProperty);
 router.get("/properties/:city", propertyController.getAllProperties);
+
+//ACCOUNT
+router.get("/account/favs/:user", accountController.getAllFavs);
+router.get("/account/fav/:property/:user", accountController.getOneFav);
+router.post("/account/favs", accountController.updateFav);
 
 module.exports = router;
