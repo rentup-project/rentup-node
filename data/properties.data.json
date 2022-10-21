@@ -32,7 +32,7 @@
             "Patio"
         ],
         "requiredJobDuration":"More than a year",
-        "requiredAnnualSalary":"<40K",
+        "requiredAnnualSalary": 30000,
         "petAllowed":false,"heating":"Individual-gas",
         "images":[
             "https://res.cloudinary.com/marinalboni/image/upload/v1665929559/Rentup/House_Room_Dataset/LivingRoom/living_57_rgh6e9.jpg",
@@ -70,7 +70,7 @@
             "Balcony"
         ],
         "requiredJobDuration":"More than a year",
-        "requiredAnnualSalary":"<50K",
+        "requiredAnnualSalary": 25000,
         "petAllowed":false,
         "heating":"Individual-gas",
         "images":[
@@ -114,7 +114,7 @@
             "Patio"
         ],
         "requiredJobDuration":"Less than 3 months",
-        "requiredAnnualSalary":"<70K",        
+        "requiredAnnualSalary": 22000,        
         "petAllowed":true,        
         "heating":"Individual-gas",
         "images":[
@@ -158,7 +158,7 @@
             "Garden"
         ],
         "requiredJobDuration":"Less than 3 months",
-        "requiredAnnualSalary":">70K",
+        "requiredAnnualSalary":26000,
         "petAllowed":false,
         "heating":"Individual-gas",
         "images": [
@@ -207,7 +207,7 @@
             "Patio"
         ],
         "requiredJobDuration":"More than a year",
-        "requiredAnnualSalary":"<70K",
+        "requiredAnnualSalary": 20000,
         "petAllowed":false,
         "heating":"Central",
         "images": [

@@ -92,8 +92,8 @@ const PropertySchema = new mongoose.Schema(
       enum: ["Less than 3 months", "Less then a year", "More than a year"],
     },
     requiredAnnualSalary: {
-      type: String,
-      enum: ["<20K", "<30K", "<40K", "<50K", "<60K", "<70K", ">70K"],
+      type: Number,
+      required: [true, "Minimum annual salary requirement is required"],
     },
     petAllowed: {
       type: Boolean,
