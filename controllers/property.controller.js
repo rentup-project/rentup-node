@@ -17,15 +17,15 @@ module.exports.getAllProperties = (req, res, next) => {
     maxPrice,
     minMeters,
     maxMeters,
-    bedroom,
-    bathroom,
-    furniture,
-    orientation,
-    petAllowed,
-    heating,
-    propertyType,
-    floor,
-    availabilityDate,
+    bedrooms,
+    bathrooms,
+    furnitures,
+    orientationType,
+    petAllowedInfo,
+    heatingType,
+    propertyTypeInfo,
+    floorInfo,
+    availabilityDateInfo,
   } = req.query;
 
   function diacriticSensitiveRegex(string = "") {
@@ -36,8 +36,6 @@ module.exports.getAllProperties = (req, res, next) => {
       .replace(/o/g, "[o,ó,ö,ò]")
       .replace(/u/g, "[u,ü,ú,ù]");
   }
-
-  // Meter filtro de monthlyRent
 
   const monthlyRent = {};
   if (maxPrice) {
@@ -55,11 +53,83 @@ module.exports.getAllProperties = (req, res, next) => {
     squaredMeters.$gte = minMeters;
   }
 
+  const bedroom = {};
+  if (bedrooms === "Studio") {
+    bedroom = 0
+  } else if (bedrooms === "1 or more") {
+    bedroom.$gte = 1
+  } else if (bedrooms === "2 or more") {
+    bedroom.$gte = 2
+  } else if (bedrooms === "3 or more") {
+    bedroom.$gte = 3
+  } else if (bedrooms === "More than 4") {
+    bedroom.$gte = 4
+  }
+ 
+  const bathroom = {};
+  if (bathrooms === "1 or more") {
+    bathroom.$gte = 1;
+  } else if (bathrooms === "2 or more") {
+    bathroom.$gte = 2;
+  } else if (bathrooms === "3 or more") {
+    bathroom.$gte = 3;
+  } else if (bathrooms === "More than 4") {
+    bathroom.$gte = 4;
+  }
+
+  const availabilityDate = {};
+  if (availabilityDateInfo === 'Available now') {
+    availabilityDate.$lte = Date.now();
+  } else if (availabilityDateInfo === 'Available soon') {
+    availabilityDate.$gt = Date.now();
+  }
+
   const criteria = {
     address: { $regex: diacriticSensitiveRegex(city), $options: "i" },
     ...(Object.keys(monthlyRent).length && { monthlyRent }),
     ...(Object.keys(squaredMeters).length && { squaredMeters }),
+    ...(Object.keys(bedroom).length && { bedroom }),
+    ...(Object.keys(bathroom).length && { bathroom }),
+    ...(Object.keys(availabilityDate).length && { availabilityDate })
   };
+
+  const furniture = {};
+  if (furnitures) {
+    criteria.furniture = furnitures;
+  }
+
+  const orientation = {};
+  if (orientationType) {
+    criteria.orientation = orientationType;
+  }
+
+  const petAllowed = {};
+  if (petAllowedInfo === "Allow pets") {
+    criteria.petAllowed = true;
+  } else if (petAllowedInfo === "Doesn't allow pets") {
+    criteria.petAllowed = false;
+  }
+
+  const heating = {};
+  if (heatingType) {
+    criteria.heating = heatingType;
+  }
+
+  const propertyType = {};
+  if (propertyTypeInfo) {
+    criteria.propertyType = propertyTypeInfo;
+  }
+
+  const floor = {};
+  if (floorInfo === "First") {
+    criteria.floor = floorInfo;
+  } else if (floorInfo === "In between") {
+    criteria.floor = floorInfo;
+  } else if (floorInfo === "Last") {
+    criteria.floor = floorInfo;
+  }
+
+  console.log(criteria);
 
   if (Object.keys(req.query).length !== 0) {
     Property.find(criteria)
