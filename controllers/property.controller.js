@@ -1,5 +1,17 @@
 const Property = require("../models/Property.model");
 
+module.exports.createProperty = (req, res, next) => {
+  const data = req.body;
+
+  console.log(data)
+  
+  Property.create({ data })
+    .then((prop) => {
+      res.status(200).json(prop);
+    })
+    .catch(next);
+};
+
 module.exports.getOneProperty = (req, res, next) => {
   const { id } = req.params;
 

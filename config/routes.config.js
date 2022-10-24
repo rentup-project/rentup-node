@@ -23,6 +23,7 @@ router.get("/users/me", authMiddleware.isAuthenticated, userController.getCurren
 
 //PROPERTIES
 router.get("/property/:id", propertyController.getOneProperty);
+router.post("/properties/create", propertyController.createProperty);
 router.get("/properties/:city", propertyController.getAllProperties);
 
 //ACCOUNT
