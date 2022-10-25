@@ -1,13 +1,20 @@
 const Property = require("../models/Property.model");
+const User = require("../models/User.model");
+const mongoose = require("mongoose");
 
 module.exports.createProperty = (req, res, next) => {
-  const data = req.body;
+  const { data } = req.body;
+  data.owner = mongoose.Types.ObjectId(data.owner);
 
-  console.log(data)
-  
-  Property.create({ data })
+  Property.create(data)
     .then((prop) => {
-      res.status(200).json(prop);
+      res.status(200).json(prop);      
+      const filter = { _id : prop.owner };
+      const update = { type : "tenant&owner" };
+      return User.findOneAndUpdate(filter, update)
+    })
+    .then(userUpdated => {
+      res.status(200)
     })
     .catch(next);
 };
