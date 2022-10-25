@@ -69,7 +69,7 @@
             "Boxroom",
             "Balcony"
         ],
-        "requiredJobDuration":"More than a year",
+        "requiredJobDuration":"One year",
         "requiredAnnualSalary": 25000,
         "petAllowed":false,
         "heating":"Individual-gas",
@@ -113,7 +113,7 @@
             "Gym",
             "Patio"
         ],
-        "requiredJobDuration":"Less than 3 months",
+        "requiredJobDuration":"More than 3 months",
         "requiredAnnualSalary": 22000,        
         "petAllowed":true,        
         "heating":"Individual-gas",
@@ -157,7 +157,7 @@
             "Terrace",
             "Garden"
         ],
-        "requiredJobDuration":"Less than 3 months",
+        "requiredJobDuration":"More than 3 months",
         "requiredAnnualSalary":26000,
         "petAllowed":false,
         "heating":"Individual-gas",

@@ -30,17 +30,27 @@ const PropertySchema = new mongoose.Schema(
     propertyType: {
       type: String,
       enum: ["House", "Apartment"],
-      required: [true, "Type is required"],
+      required: [true, "Property type is required"],
     },
     houseType: {
       type: String,
       enum: ["Detached house", "Single family house", "Semi-detached house"],
-      required: [true, "Type is required"],
+      required: [
+        function () {
+          return this.propertyType === "House";
+        },
+        "House type is required",
+      ],
     },
     apartmentType: {
       type: String,
       enum: ["Apartment", "Penthouse", "Duplex", "Studio", "Loft"],
-      required: [true, "Type is required"],
+      required: [
+        function () {
+          return this.propertyType === "Apartment";
+        },
+        "Apartment type is required",
+      ],
     },
     squaredMeters: {
       type: Number,
@@ -57,7 +67,11 @@ const PropertySchema = new mongoose.Schema(
     orientation: {
       type: String,
       enum: ["Exterior", "Interior"],
-      required: [true, "Orientation is required"],
+      required: [
+        function () {
+          return this.propertyType === "Apartment";
+        },
+        "Orientation is required"],
     },
     furniture: {
       type: String,
@@ -66,7 +80,11 @@ const PropertySchema = new mongoose.Schema(
     floor: {
       type: String,
       enum: ["First", "In between", "Last"],
-      required: [true, "Floor is required"],
+      required: [
+        function () {
+          return this.propertyType === "Apartment";
+        },
+        "Floor is required"],
     },
     features: {
       type: [String],
@@ -89,7 +107,7 @@ const PropertySchema = new mongoose.Schema(
     },
     requiredJobDuration: {
       type: String,
-      enum: ["Less than 3 months", "Less then a year", "More than a year"],
+      enum: ["More than 3 months", "One year", "More than a year"],
     },
     requiredAnnualSalary: {
       type: Number,
