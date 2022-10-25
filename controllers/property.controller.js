@@ -74,7 +74,7 @@ module.exports.getAllProperties = (req, res, next) => {
 
   const bedroom = {};
   if (bedrooms === "Studio") {
-    bedroom = 0
+    bedroom.$gte = 0
   } else if (bedrooms === "1 or more") {
     bedroom.$gte = 1
   } else if (bedrooms === "2 or more") {
@@ -147,8 +147,6 @@ module.exports.getAllProperties = (req, res, next) => {
   } else if (floorInfo === "Last") {
     criteria.floor = floorInfo;
   }
-
-  console.log(criteria);
 
   if (Object.keys(req.query).length !== 0) {
     Property.find(criteria)
