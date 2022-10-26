@@ -73,7 +73,7 @@ module.exports.getAllProperties = (req, res, next) => {
   }
 
   const bedroom = {};
-  if (bedrooms === "Studio") {
+  if (bedrooms === "Studio" || bedrooms === "Select") {
     bedroom.$gte = 0
   } else if (bedrooms === "1 or more") {
     bedroom.$gte = 1
@@ -86,7 +86,7 @@ module.exports.getAllProperties = (req, res, next) => {
   }
  
   const bathroom = {};
-  if (bathrooms === "1 or more") {
+  if (bathrooms === "1 or more" || bathrooms === "Select") {
     bathroom.$gte = 1;
   } else if (bathrooms === "2 or more") {
     bathroom.$gte = 2;
@@ -101,6 +101,8 @@ module.exports.getAllProperties = (req, res, next) => {
     availabilityDate.$lte = Date.now();
   } else if (availabilityDateInfo === 'Available soon') {
     availabilityDate.$gt = Date.now();
+  } else if (availabilityDateInfo === "Select") {
+    availabilityDate = null
   }
 
   const criteria = {
@@ -113,12 +115,12 @@ module.exports.getAllProperties = (req, res, next) => {
   };
 
   const furniture = {};
-  if (furnitures) {
+  if (furnitures && furnitures !== "Select") {
     criteria.furniture = furnitures;
   }
 
   const orientation = {};
-  if (orientationType) {
+  if (orientationType  && orientationType !== "Select") {
     criteria.orientation = orientationType;
   }
 
@@ -127,15 +129,17 @@ module.exports.getAllProperties = (req, res, next) => {
     criteria.petAllowed = true;
   } else if (petAllowedInfo === "Doesn't allow pets") {
     criteria.petAllowed = false;
+  } else if (petAllowedInfo === "Select") {
+    criteria.petAllowed = null
   }
 
   const heating = {};
-  if (heatingType) {
+  if (heatingType && heatingType !== "Select") {
     criteria.heating = heatingType;
   }
 
   const propertyType = {};
-  if (propertyTypeInfo) {
+  if (propertyTypeInfo && propertyTypeInfo !== "Select") {
     criteria.propertyType = propertyTypeInfo;
   }
 
@@ -146,6 +150,8 @@ module.exports.getAllProperties = (req, res, next) => {
     criteria.floor = floorInfo;
   } else if (floorInfo === "Last") {
     criteria.floor = floorInfo;
+  } else if (floorInfo === "Select") {
+    criteria.floorInfo = null
   }
 
   if (Object.keys(req.query).length !== 0) {

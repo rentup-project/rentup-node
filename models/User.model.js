@@ -108,6 +108,20 @@ UserSchema.virtual("reservation", {
   justOne: true,
 });
 
+UserSchema.virtual("messages", {
+  ref: "Message",
+  localField: "_id",
+  foreignField: "sender",
+  justOne: true,
+});
+
+UserSchema.virtual("messages", {
+  ref: "Message",
+  localField: "_id",
+  foreignField: "receiver",
+  justOne: true,
+});
+
 UserSchema.pre('save', function(next) {
   if (this.isModified('password')) {
     bcrypt.hash(this.password, ROUNDS)
