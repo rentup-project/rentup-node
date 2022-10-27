@@ -12,3 +12,17 @@ module.exports.getCurrentUser = (req, res, next) => {
         })
         .catch(next)
 }
+
+module.exports.getUser = (req, res, next) => {
+    const { id } = req.params
+
+    User.findById(id)
+        .then(user => {
+        if (!user) {
+            next(createError(404, 'User not found'));
+        } else {
+            res.json(user);
+        }
+        })
+        .catch(next)
+}

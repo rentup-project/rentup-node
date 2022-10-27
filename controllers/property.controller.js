@@ -29,8 +29,6 @@ module.exports.createProperty = (req, res, next) => {
     newProperty.images = paths
   } */
 
-  console.log("newProperty", newProperty);
-
   Property.create(newProperty)
     .then((prop) => {
       res.status(200).json(prop);
@@ -44,12 +42,75 @@ module.exports.createProperty = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.editProperty = (req, res, next) => {
+  const { id } = req.params;
+
+   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
+
+   if (req.body.petAllowed === "Yes") {
+     req.body.petAllowed = true;
+   } else if (req.body.petAllowed === "No") {
+     req.body.petAllowed = false;
+   }
+
+   req.body.features = req.body.features.split(",");
+
+   const editProperty = {
+     ...req.body,
+   };
+
+   if (req.file) {
+     editProperty.image = req.file.path;
+   }
+
+  Property.findByIdAndUpdate({ id, editProperty })
+    .then((propUpdated) => {
+      res.status(200).json(propUpdated);
+    })
+    .catch(next);
+};
+
+
+
 module.exports.getOneProperty = (req, res, next) => {
   const { id } = req.params;
 
   Property.findById(id)
     .then((prop) => {
       res.status(201).json(prop);
+    })
+    .catch(next);
+};
+
+module.exports.getOwnerProperties = (req, res, next) => {
+  const { user } = req.params
+
+  Property.find({ owner: user })
+    .then((props) => {
+      res.status(201).json(props);
+    })
+    .catch(next);
+};
+
+module.exports.deleteProperty = (req, res, next) => {
+  const { id } = req.params;
+
+  Property.findByIdAndDelete(id)
+    .then((propDeleted) => {
+      res.status(201).json(propDeleted);
+      const owner = propDeleted.owner;
+
+      Property.find(owner).then((props) => {
+        if (!props) {
+          const filter = { _id: owner };
+          const update = { type: "tenant" };
+
+          return User.findOneAndUpdate(filter, update);
+        }
+      })
+    })
+    .then((userUpdated) => {
+      res.status(200);
     })
     .catch(next);
 };
@@ -98,7 +159,7 @@ module.exports.getAllProperties = (req, res, next) => {
   }
 
   const bedroom = {};
-  if (bedrooms === "Studio") {
+  if (bedrooms === "Studio" || bedrooms === "Select") {
     bedroom.$gte = 0;
   } else if (bedrooms === "1 or more") {
     bedroom.$gte = 1;
@@ -111,7 +172,7 @@ module.exports.getAllProperties = (req, res, next) => {
   }
 
   const bathroom = {};
-  if (bathrooms === "1 or more") {
+  if (bathrooms === "1 or more" || bathrooms === "Select") {
     bathroom.$gte = 1;
   } else if (bathrooms === "2 or more") {
     bathroom.$gte = 2;
@@ -126,6 +187,8 @@ module.exports.getAllProperties = (req, res, next) => {
     availabilityDate.$lte = Date.now();
   } else if (availabilityDateInfo === "Available soon") {
     availabilityDate.$gt = Date.now();
+  } else if (availabilityDateInfo === "Select") {
+    availabilityDate = null
   }
 
   const criteria = {
@@ -138,12 +201,12 @@ module.exports.getAllProperties = (req, res, next) => {
   };
 
   const furniture = {};
-  if (furnitures) {
+  if (furnitures && furnitures !== "Select") {
     criteria.furniture = furnitures;
   }
 
   const orientation = {};
-  if (orientationType) {
+  if (orientationType  && orientationType !== "Select") {
     criteria.orientation = orientationType;
   }
 
@@ -152,15 +215,17 @@ module.exports.getAllProperties = (req, res, next) => {
     criteria.petAllowed = true;
   } else if (petAllowedInfo === "Doesn't allow pets") {
     criteria.petAllowed = false;
+  } else if (petAllowedInfo === "Select") {
+    criteria.petAllowed = null
   }
 
   const heating = {};
-  if (heatingType) {
+  if (heatingType && heatingType !== "Select") {
     criteria.heating = heatingType;
   }
 
   const propertyType = {};
-  if (propertyTypeInfo) {
+  if (propertyTypeInfo && propertyTypeInfo !== "Select") {
     criteria.propertyType = propertyTypeInfo;
   }
 
@@ -171,6 +236,8 @@ module.exports.getAllProperties = (req, res, next) => {
     criteria.floor = floorInfo;
   } else if (floorInfo === "Last") {
     criteria.floor = floorInfo;
+  } else if (floorInfo === "Select") {
+    criteria.floorInfo = null
   }
 
   if (Object.keys(req.query).length !== 0) {
