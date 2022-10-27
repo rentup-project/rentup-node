@@ -4,7 +4,8 @@ const userController = require("../controllers/user.controller");
 const authController = require("../controllers/auth.controller");
 const propertyController = require("../controllers/property.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
-const accountController = require('../controllers/account.controller');
+const accountController = require("../controllers/account.controller");
+const fileUploader = require("./cloudinary.config");
 
 const SCOPES = ["profile", "email"];
 
@@ -15,15 +16,31 @@ router.get("/", (req, res, next) => res.json({ ok: true }));
 router.post("/register", authController.register);
 router.get("/activate/:token", authController.activateAccount);
 router.post("/login", authController.login);
-router.get("/login/google", passport.authenticate("google-auth", { scope: SCOPES }));
+router.get(
+  "/login/google",
+  passport.authenticate("google-auth", { scope: SCOPES })
+);
 router.get("/auth/google/callback", authController.loginGoogle);
 
 //USER
-router.get("/users/me", authMiddleware.isAuthenticated, userController.getCurrentUser);
+router.get(
+  "/users/me",
+  authMiddleware.isAuthenticated,
+  userController.getCurrentUser
+);
 
 //PROPERTIES
 router.get("/property/:id", propertyController.getOneProperty);
-router.post("/properties/create", propertyController.createProperty);
+/* router.post(
+  "/properties/create",
+  fileUploader.array("images"),
+  propertyController.createProperty
+); */
+router.post(
+  "/properties/create",
+  fileUploader.single("image"),
+  propertyController.createProperty
+);
 router.get("/properties/:city", propertyController.getAllProperties);
 
 //ACCOUNT

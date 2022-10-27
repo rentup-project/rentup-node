@@ -3,18 +3,43 @@ const User = require("../models/User.model");
 const mongoose = require("mongoose");
 
 module.exports.createProperty = (req, res, next) => {
-  const { data } = req.body;
-  data.owner = mongoose.Types.ObjectId(data.owner);
 
-  Property.create(data)
+  req.body.owner = mongoose.Types.ObjectId(req.body.owner);
+
+  if (req.body.petAllowed === "Yes") {
+      req.body.petAllowed = true
+  } else if (req.body.petAllowed === "No") {
+      req.body.petAllowed = false
+  }
+
+  req.body.features = req.body.features.split(',')
+
+  const newProperty = {
+    ...req.body,
+  };  
+
+   if (req.file) {
+     newProperty.image = req.file.path;
+   }
+  
+ /*  if (req.files) {
+    const paths = req.files.map(file => {
+      console.log(file.path)
+      file.path})
+    newProperty.images = paths
+  } */
+
+  console.log("newProperty", newProperty);
+
+  Property.create(newProperty)
     .then((prop) => {
-      res.status(200).json(prop);      
-      const filter = { _id : prop.owner };
-      const update = { type : "tenant&owner" };
-      return User.findOneAndUpdate(filter, update)
+      res.status(200).json(prop);
+      const filter = { _id: prop.owner };
+      const update = { type: "tenant&owner" };
+      return User.findOneAndUpdate(filter, update);
     })
-    .then(userUpdated => {
-      res.status(200)
+    .then((userUpdated) => {
+      res.status(200);
     })
     .catch(next);
 };
@@ -74,17 +99,17 @@ module.exports.getAllProperties = (req, res, next) => {
 
   const bedroom = {};
   if (bedrooms === "Studio") {
-    bedroom.$gte = 0
+    bedroom.$gte = 0;
   } else if (bedrooms === "1 or more") {
-    bedroom.$gte = 1
+    bedroom.$gte = 1;
   } else if (bedrooms === "2 or more") {
-    bedroom.$gte = 2
+    bedroom.$gte = 2;
   } else if (bedrooms === "3 or more") {
-    bedroom.$gte = 3
+    bedroom.$gte = 3;
   } else if (bedrooms === "More than 4") {
-    bedroom.$gte = 4
+    bedroom.$gte = 4;
   }
- 
+
   const bathroom = {};
   if (bathrooms === "1 or more") {
     bathroom.$gte = 1;
@@ -97,9 +122,9 @@ module.exports.getAllProperties = (req, res, next) => {
   }
 
   const availabilityDate = {};
-  if (availabilityDateInfo === 'Available now') {
+  if (availabilityDateInfo === "Available now") {
     availabilityDate.$lte = Date.now();
-  } else if (availabilityDateInfo === 'Available soon') {
+  } else if (availabilityDateInfo === "Available soon") {
     availabilityDate.$gt = Date.now();
   }
 
@@ -109,7 +134,7 @@ module.exports.getAllProperties = (req, res, next) => {
     ...(Object.keys(squaredMeters).length && { squaredMeters }),
     ...(Object.keys(bedroom).length && { bedroom }),
     ...(Object.keys(bathroom).length && { bathroom }),
-    ...(Object.keys(availabilityDate).length && { availabilityDate })
+    ...(Object.keys(availabilityDate).length && { availabilityDate }),
   };
 
   const furniture = {};

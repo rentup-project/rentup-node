@@ -71,7 +71,8 @@ const PropertySchema = new mongoose.Schema(
         function () {
           return this.propertyType === "Apartment";
         },
-        "Orientation is required"],
+        "Orientation is required",
+      ],
     },
     furniture: {
       type: String,
@@ -84,7 +85,8 @@ const PropertySchema = new mongoose.Schema(
         function () {
           return this.propertyType === "Apartment";
         },
-        "Floor is required"],
+        "Floor is required",
+      ],
     },
     features: {
       type: [String],
@@ -121,10 +123,14 @@ const PropertySchema = new mongoose.Schema(
       type: String,
       enum: ["Individual-electric", "Central", "Individual-gas"],
     },
-    images: {
+    /* images: {
       type: Array,
       required: [true, "Upload at least five images"],
       minItems: 5,
+    }, */
+    image: {
+      type: String,
+      required: [true, "Upload a image is required"],
     },
     monthlyRent: {
       type: Number,
