@@ -101,8 +101,6 @@ module.exports.getAllProperties = (req, res, next) => {
     availabilityDate.$lte = Date.now();
   } else if (availabilityDateInfo === 'Available soon') {
     availabilityDate.$gt = Date.now();
-  } else if (availabilityDateInfo === "Select") {
-    availabilityDate = null
   }
 
   const criteria = {
@@ -125,12 +123,10 @@ module.exports.getAllProperties = (req, res, next) => {
   }
 
   const petAllowed = {};
-  if (petAllowedInfo === "Allow pets") {
+  if (petAllowedInfo === "Allow pets" || petAllowedInfo === "Select") {
     criteria.petAllowed = true;
-  } else if (petAllowedInfo === "Doesn't allow pets") {
+  } else if (petAllowedInfo === "Doesn't allow pets" && petAllowedInfo !== "Select") {
     criteria.petAllowed = false;
-  } else if (petAllowedInfo === "Select") {
-    criteria.petAllowed = null
   }
 
   const heating = {};
