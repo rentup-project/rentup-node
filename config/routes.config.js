@@ -26,7 +26,9 @@ router.get("/auth/google/callback", authController.loginGoogle);
 router.get("/users/me", authMiddleware.isAuthenticated, userController.getCurrentUser);
 router.get("/users/:id", authMiddleware.isAuthenticated, userController.getUser);
 
-//USER
+//MESSAGES
+router.get("/messages/select/:currentUser", authMiddleware.isAuthenticated, messagesController.selectUser);
+router.post("/messages/create", authMiddleware.isAuthenticated, messagesController.createMessage);
 router.get("/messages/:currentUser/:owner", authMiddleware.isAuthenticated, messagesController.getMessages);
 
 //PROPERTIES
