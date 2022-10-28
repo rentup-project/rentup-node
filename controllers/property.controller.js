@@ -105,6 +105,7 @@ module.exports.getAllProperties = (req, res, next) => {
 
   const criteria = {
     address: { $regex: diacriticSensitiveRegex(city), $options: "i" },
+    reserved: false,
     ...(Object.keys(monthlyRent).length && { monthlyRent }),
     ...(Object.keys(squaredMeters).length && { squaredMeters }),
     ...(Object.keys(bedroom).length && { bedroom }),
