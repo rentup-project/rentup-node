@@ -34,7 +34,7 @@ router.get("/messages/:currentUser/:owner", authMiddleware.isAuthenticated, mess
 //PROPERTIES
 router.get("/property/:id", propertyController.getOneProperty);
 router.post("/properties/create", propertyController.createProperty);
-router.get("/properties/:city", propertyController.getAllProperties);
+router.get("/properties/:city/:skipNumber", propertyController.getAllProperties);
 
 //ACCOUNT
 router.get("/account/favs/:user", accountController.getAllFavs);
