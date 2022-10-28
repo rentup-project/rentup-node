@@ -30,7 +30,7 @@ module.exports.getOneProperty = (req, res, next) => {
 };
 
 module.exports.getAllProperties = (req, res, next) => {
-  const { city, skipNumber } = req.params;
+  const { city } = req.params;
   const {
     minPrice,
     maxPrice,
@@ -153,38 +153,16 @@ module.exports.getAllProperties = (req, res, next) => {
 
   if (Object.keys(req.query).length !== 0) {
     Property.find(criteria)
-      .skip(skipNumber)
-      .limit(10)
       .then((props) => {
-        Property.find(criteria)
-        .count()
-        .then((number) => {
-          let ObjToSend = {}
-          ObjToSend.totalDocuments = number
-          ObjToSend.json = props
-          res.status(200).json(ObjToSend);
-        })
-        .catch(next);
+        res.status(200).json(props);
       })
       .catch(next);
   } else {
     Property.find({
       address: { $regex: diacriticSensitiveRegex(city), $options: "i" },
     })
-      .skip(skipNumber)
-      .limit(10)
       .then((props) => {
-        Property.find({
-          address: { $regex: diacriticSensitiveRegex(city), $options: "i" },
-        })
-        .count()
-        .then((number) => {
-          let ObjToSend = {}
-          ObjToSend.totalDocuments = number
-          ObjToSend.json = props
-          res.status(200).json(ObjToSend);
-        })
-        .catch(next);
+        res.status(200).json(props);
       })
       .catch(next);
   }
