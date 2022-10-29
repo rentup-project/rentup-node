@@ -1,14 +1,13 @@
 const router = require("express").Router();
 const passport = require("passport");
+const fileUploader = require("./cloudinary.config");
 const userController = require("../controllers/user.controller");
 const authController = require("../controllers/auth.controller");
 const propertyController = require("../controllers/property.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
-const accountController = require('../controllers/account.controller');
-const messagesController = require('../controllers/messages.controller');
-const StripePackage = require('stripe');
-const stripe = StripePackage(process.env.STRIPE_API_KEY);
-
+const accountController = require("../controllers/account.controller");
+const messagesController = require("../controllers/messages.controller");
+const myAreaController = require("../controllers/my-area.controller");
 
 const SCOPES = ["profile", "email"];
 
@@ -19,12 +18,23 @@ router.get("/", (req, res, next) => res.json({ ok: true }));
 router.post("/register", authController.register);
 router.get("/activate/:token", authController.activateAccount);
 router.post("/login", authController.login);
-router.get("/login/google", passport.authenticate("google-auth", { scope: SCOPES }));
+router.get(
+  "/login/google",
+  passport.authenticate("google-auth", { scope: SCOPES })
+);
 router.get("/auth/google/callback", authController.loginGoogle);
 
 //USER
-router.get("/users/me", authMiddleware.isAuthenticated, userController.getCurrentUser);
-router.get("/users/:id", authMiddleware.isAuthenticated, userController.getUser);
+router.get(
+  "/users/me",
+  authMiddleware.isAuthenticated,
+  userController.getCurrentUser
+);
+router.get(
+  "/users/:id",
+  authMiddleware.isAuthenticated,
+  userController.getUser
+);
 
 //MESSAGES
 router.get("/messages/select/:currentUser", authMiddleware.isAuthenticated, messagesController.selectUser);
@@ -33,38 +43,26 @@ router.get("/messages/:currentUser/:owner", authMiddleware.isAuthenticated, mess
 
 //PROPERTIES
 router.get("/property/:id", propertyController.getOneProperty);
-router.post("/properties/create", propertyController.createProperty);
+router.post("/properties/create", fileUploader.array("images", 10), propertyController.createProperty);
+router.post("/properties/edit/:id", fileUploader.array("images", 10), propertyController.editProperty);
 router.get("/properties/:city", propertyController.getAllProperties);
+router.get("/properties/created/:user", propertyController.getOwnerProperties);
+router.delete("/properties/delete/:id", propertyController.deleteProperty);
 
 //ACCOUNT
 router.get("/account/favs/:user", accountController.getAllFavs);
 router.get("/account/fav/:property/:user", accountController.getOneFav);
 router.post("/account/favs", accountController.updateFav);
 
-//PAYMENT
-router.post("/create-payment-intent", async (req, res) => {
-    const { items } = req.body;
-    console.log('entra: ', items)
+//MY PERSONAL AREA
+router.post(
+  "/my-area/prequalifications",
+  myAreaController.completePrequalifications
+);
+router.get(
+  "/my-area/prequalifications/:user",
+  myAreaController.editPrequalifications
+);
 
-    const calculateOrderAmount = (items) => {
-        // Replace this constant with a calculation of the order's amount
-        // Calculate the order total on the server to prevent
-        // people from directly manipulating the amount on the client
-        return 1400;
-      };
-  
-    // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: calculateOrderAmount(items),
-      currency: "usd",
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
-  
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
-  });
 
 module.exports = router;

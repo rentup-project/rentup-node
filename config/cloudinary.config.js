@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "Rentup",
-    allowedFormats: ["jpg", "png", "pdf"],
+    allowedFormats: ["jpg", "png"],
     public_id: (req, file) => file.originalname.split(".")[0],
   },
 });

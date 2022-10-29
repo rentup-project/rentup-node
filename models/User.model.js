@@ -122,6 +122,13 @@ UserSchema.virtual("messages", {
   justOne: true,
 });
 
+UserSchema.virtual("prequalification", {
+  ref: "Prequalification",
+  localField: "_id",
+  foreignField: "tenant",
+  justOne: true,
+});
+
 UserSchema.pre('save', function(next) {
   if (this.isModified('password')) {
     bcrypt.hash(this.password, ROUNDS)
