@@ -3,31 +3,26 @@ const User = require("../models/User.model");
 const mongoose = require("mongoose");
 
 module.exports.createProperty = (req, res, next) => {
-
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
 
   if (req.body.petAllowed === "Yes") {
-      req.body.petAllowed = true
+    req.body.petAllowed = true;
   } else if (req.body.petAllowed === "No") {
-      req.body.petAllowed = false
+    req.body.petAllowed = false;
   }
 
-  req.body.features = req.body.features.split(',')
+  req.body.features = req.body.features.split(",");
 
   const newProperty = {
     ...req.body,
-  };  
+  };
 
-   if (req.file) {
-     newProperty.image = req.file.path;
-   }
-  
- /*  if (req.files) {
-    const paths = req.files.map(file => {
-      console.log(file.path)
-      file.path})
-    newProperty.images = paths
-  } */
+  if (req.files) {
+    const paths = req.files.map((file) => {
+      return file.path;
+    });
+    newProperty.images = paths;
+  }
 
   Property.create(newProperty)
     .then((prop) => {
@@ -45,32 +40,30 @@ module.exports.createProperty = (req, res, next) => {
 module.exports.editProperty = (req, res, next) => {
   const { id } = req.params;
 
-   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
+  req.body.owner = mongoose.Types.ObjectId(req.body.owner);
 
-   if (req.body.petAllowed === "Yes") {
-     req.body.petAllowed = true;
-   } else if (req.body.petAllowed === "No") {
-     req.body.petAllowed = false;
-   }
+  if (req.body.petAllowed === "Yes") {
+    req.body.petAllowed = true;
+  } else if (req.body.petAllowed === "No") {
+    req.body.petAllowed = false;
+  }
 
-   req.body.features = req.body.features.split(",");
+  req.body.features = req.body.features.split(",");
 
-   const editProperty = {
-     ...req.body,
-   };
+  const editProperty = {
+    ...req.body,
+  };
 
-   if (req.file) {
-     editProperty.image = req.file.path;
-   }
+  if (req.file) {
+    editProperty.image = req.file.path;
+  }
 
-  Property.findByIdAndUpdate({ id, editProperty })
+  Property.findOneAndUpdate(id, editProperty)
     .then((propUpdated) => {
       res.status(200).json(propUpdated);
     })
     .catch(next);
 };
-
-
 
 module.exports.getOneProperty = (req, res, next) => {
   const { id } = req.params;
@@ -83,9 +76,9 @@ module.exports.getOneProperty = (req, res, next) => {
 };
 
 module.exports.getOwnerProperties = (req, res, next) => {
-  const { user } = req.params
+  const { user } = req.params;
 
-  Property.find({ owner: user })
+  Property.find({ owner: user, reserved: false })
     .then((props) => {
       res.status(201).json(props);
     })
@@ -94,23 +87,28 @@ module.exports.getOwnerProperties = (req, res, next) => {
 
 module.exports.deleteProperty = (req, res, next) => {
   const { id } = req.params;
+  let owner = "";
 
-  Property.findByIdAndDelete(id)
+  Property.findById(id)
+    .then((prop) => {
+      owner = prop.owner;
+      return Property.findByIdAndDelete(id);
+    })
     .then((propDeleted) => {
       res.status(201).json(propDeleted);
-      const owner = propDeleted.owner;
-
-      Property.find(owner).then((props) => {
-        if (!props) {
-          const filter = { _id: owner };
-          const update = { type: "tenant" };
-
-          return User.findOneAndUpdate(filter, update);
-        }
-      })
+      return Property.find(owner);
     })
-    .then((userUpdated) => {
-      res.status(200);
+    .then((props) => {
+      if (props.length === 0) {
+        const filter = { _id: owner };
+        const update = { type: "tenant" };
+
+        User.findOneAndUpdate(filter, update)
+          .then((userUpdated) => {
+            res.status(201);
+          })
+          .catch(next);
+      }
     })
     .catch(next);
 };
@@ -188,11 +186,12 @@ module.exports.getAllProperties = (req, res, next) => {
   } else if (availabilityDateInfo === "Available soon") {
     availabilityDate.$gt = Date.now();
   } else if (availabilityDateInfo === "Select") {
-    availabilityDate = null
+    availabilityDate = null;
   }
 
   const criteria = {
     address: { $regex: diacriticSensitiveRegex(city), $options: "i" },
+    reserved: false,
     ...(Object.keys(monthlyRent).length && { monthlyRent }),
     ...(Object.keys(squaredMeters).length && { squaredMeters }),
     ...(Object.keys(bedroom).length && { bedroom }),
@@ -206,7 +205,7 @@ module.exports.getAllProperties = (req, res, next) => {
   }
 
   const orientation = {};
-  if (orientationType  && orientationType !== "Select") {
+  if (orientationType && orientationType !== "Select") {
     criteria.orientation = orientationType;
   }
 
@@ -216,7 +215,7 @@ module.exports.getAllProperties = (req, res, next) => {
   } else if (petAllowedInfo === "Doesn't allow pets") {
     criteria.petAllowed = false;
   } else if (petAllowedInfo === "Select") {
-    criteria.petAllowed = null
+    criteria.petAllowed = null;
   }
 
   const heating = {};
@@ -237,7 +236,7 @@ module.exports.getAllProperties = (req, res, next) => {
   } else if (floorInfo === "Last") {
     criteria.floor = floorInfo;
   } else if (floorInfo === "Select") {
-    criteria.floorInfo = null
+    criteria.floorInfo = null;
   }
 
   if (Object.keys(req.query).length !== 0) {

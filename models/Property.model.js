@@ -123,14 +123,10 @@ const PropertySchema = new mongoose.Schema(
       type: String,
       enum: ["Individual-electric", "Central", "Individual-gas"],
     },
-    /* images: {
+    images: {
       type: Array,
       required: [true, "Upload at least five images"],
       minItems: 5,
-    }, */
-    image: {
-      type: String,
-      required: [true, "Upload a image is required"],
     },
     monthlyRent: {
       type: Number,

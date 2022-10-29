@@ -2,26 +2,33 @@ const mongoose = require("mongoose");
 
 const PrequalificationSchema = new mongoose.Schema(
   {
+    tenant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     tenantsQuantity: {
       type: Number,
       required: [true, "Tenants quantity is required"],
     },
     hasPet: {
-      type: Boolean,
+      type: String,
+      enum: ["Yes", "No"],
       required: [true, "Pet information is required"],
     },
-    requiredJobDuration: {
+    jobDuration: {
       type: String,
       enum: ["More than 3 months", "One year", "More than a year"],
+      required: [true, "Job duration is required"],
     },
-    requiredAnnualSalary: {
+    annualSalary: {
       type: Number,
-      required: [true, "Minimum annual salary requirement is required"],
+      required: [true, "Annual salary is required"],
     },
     hasGuarantee: {
       type: String,
       enum: ["None", "1 month", "2 months"],
-    }
+      required: [true, "Guarantee is required"],
+    },
   },
   {
     timestamps: true,
@@ -37,13 +44,6 @@ const PrequalificationSchema = new mongoose.Schema(
     },
   }
 );
-
-PrequalificationSchema.virtual("property", {
-  ref: "Property",
-  localField: "_id",
-  foreignField: "owner",
-  justOne: true,
-});
 
 const Prequalification = mongoose.model("Prequalification", PrequalificationSchema);
 
