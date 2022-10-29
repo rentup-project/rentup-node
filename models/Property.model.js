@@ -71,7 +71,8 @@ const PropertySchema = new mongoose.Schema(
         function () {
           return this.propertyType === "Apartment";
         },
-        "Orientation is required"],
+        "Orientation is required",
+      ],
     },
     furniture: {
       type: String,
@@ -84,7 +85,8 @@ const PropertySchema = new mongoose.Schema(
         function () {
           return this.propertyType === "Apartment";
         },
-        "Floor is required"],
+        "Floor is required",
+      ],
     },
     features: {
       type: [String],
