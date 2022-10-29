@@ -5,6 +5,7 @@ const userController = require("../controllers/user.controller");
 const authController = require("../controllers/auth.controller");
 const propertyController = require("../controllers/property.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
+const paymentController = require("../controllers/payment.controller");
 const accountController = require("../controllers/account.controller");
 const messagesController = require("../controllers/messages.controller");
 const myAreaController = require("../controllers/my-area.controller");
@@ -54,6 +55,10 @@ router.get("/account/favs/:user", accountController.getAllFavs);
 router.get("/account/fav/:property/:user", accountController.getOneFav);
 router.post("/account/favs", accountController.updateFav);
 
+
+//PAYMENT
+router.post("/create-payment-intent", paymentController.loadPaymentScreen);
+
 //MY PERSONAL AREA
 router.post(
   "/my-area/prequalifications",
@@ -63,6 +68,5 @@ router.get(
   "/my-area/prequalifications/:user",
   myAreaController.editPrequalifications
 );
-
 
 module.exports = router;
