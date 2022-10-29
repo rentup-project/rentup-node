@@ -39,7 +39,6 @@ module.exports.createProperty = (req, res, next) => {
 
 module.exports.editProperty = (req, res, next) => {
   const { id } = req.params;
-
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
 
   if (req.body.petAllowed === "Yes") {
@@ -54,8 +53,11 @@ module.exports.editProperty = (req, res, next) => {
     ...req.body,
   };
 
-  if (req.file) {
-    editProperty.image = req.file.path;
+  if (req.files) {
+    const paths = req.files.map((file) => {
+      return file.path;
+    });
+    editProperty.images = paths;
   }
 
   Property.findOneAndUpdate(id, editProperty)

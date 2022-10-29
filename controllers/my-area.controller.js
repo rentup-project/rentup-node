@@ -11,12 +11,17 @@ module.exports.completePrequalifications = (req, res, next) => {
     .catch(next);
 };
 
-/* module.exports.editPrequalifications = (req, res, next) => {
-  req.body.tenant = mongoose.Types.ObjectId(req.body.tenant);
+module.exports.editPrequalifications = (req, res, next) => {
+  const { user } = req.params;
+  const editPrequalifications = {
+    ...req.body,
+  };
 
-  Prequalification.findOneAndUpdate(req.body)
+  editPrequalifications.tenant = mongoose.Types.ObjectId(user);
+
+  Prequalification.findOneAndUpdate({ id, editPrequalifications })
     .then((formCompleted) => {
       res.status(201).json(formCompleted);
     })
     .catch(next);
-}; */
+};

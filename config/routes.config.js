@@ -46,9 +46,9 @@ router.get(
 //PROPERTIES
 router.get("/property/:id", propertyController.getOneProperty);
 router.post("/properties/create", fileUploader.array("images", 10), propertyController.createProperty);
+router.post("/properties/edit/:id", fileUploader.array("images", 10), propertyController.editProperty);
 router.get("/properties/:city", propertyController.getAllProperties);
 router.get("/properties/created/:user", propertyController.getOwnerProperties);
-router.post("/properties/edit/:id", propertyController.editProperty);
 router.delete("/properties/delete/:id", propertyController.deleteProperty);
 
 //ACCOUNT
@@ -60,6 +60,10 @@ router.post("/account/favs", accountController.updateFav);
 router.post(
   "/my-area/prequalifications",
   myAreaController.completePrequalifications
+);
+router.get(
+  "/my-area/prequalifications/:user",
+  myAreaController.editPrequalifications
 );
 
 module.exports = router;
