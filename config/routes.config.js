@@ -6,9 +6,7 @@ const propertyController = require("../controllers/property.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 const accountController = require('../controllers/account.controller');
 const messagesController = require('../controllers/messages.controller');
-const StripePackage = require('stripe');
-const stripe = StripePackage(process.env.STRIPE_API_KEY);
-
+const paymentController = require("../controllers/payment.controller");
 
 const SCOPES = ["profile", "email"];
 
@@ -42,29 +40,6 @@ router.get("/account/fav/:property/:user", accountController.getOneFav);
 router.post("/account/favs", accountController.updateFav);
 
 //PAYMENT
-router.post("/create-payment-intent", async (req, res) => {
-    const { items } = req.body;
-    console.log('entra: ', items)
-
-    const calculateOrderAmount = (items) => {
-        // Replace this constant with a calculation of the order's amount
-        // Calculate the order total on the server to prevent
-        // people from directly manipulating the amount on the client
-        return 1400;
-      };
-  
-    // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: calculateOrderAmount(items),
-      currency: "usd",
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
-  
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
-  });
+router.post("/create-payment-intent", paymentController.loadPaymentScreen);
 
 module.exports = router;
