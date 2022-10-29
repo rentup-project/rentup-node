@@ -212,9 +212,9 @@ module.exports.getAllProperties = (req, res, next) => {
   }
 
   const petAllowed = {};
-  if (petAllowedInfo === "Allow pets") {
+  if (petAllowedInfo === "Allow pets" || petAllowedInfo === "Select") {
     criteria.petAllowed = true;
-  } else if (petAllowedInfo === "Doesn't allow pets") {
+  } else if (petAllowedInfo === "Doesn't allow pets" && petAllowedInfo !== "Select") {
     criteria.petAllowed = false;
   } else if (petAllowedInfo === "Select") {
     criteria.petAllowed = null;

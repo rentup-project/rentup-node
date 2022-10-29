@@ -36,12 +36,10 @@ router.get(
   userController.getUser
 );
 
-//USER
-router.get(
-  "/messages/:currentUser/:owner",
-  authMiddleware.isAuthenticated,
-  messagesController.getMessages
-);
+//MESSAGES
+router.get("/messages/select/:currentUser", authMiddleware.isAuthenticated, messagesController.selectUser);
+router.post("/messages/create", authMiddleware.isAuthenticated, messagesController.createMessage);
+router.get("/messages/:currentUser/:owner", authMiddleware.isAuthenticated, messagesController.getMessages);
 
 //PROPERTIES
 router.get("/property/:id", propertyController.getOneProperty);
@@ -65,5 +63,6 @@ router.get(
   "/my-area/prequalifications/:user",
   myAreaController.editPrequalifications
 );
+
 
 module.exports = router;
