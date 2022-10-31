@@ -9,6 +9,7 @@ const paymentController = require("../controllers/payment.controller");
 const accountController = require("../controllers/account.controller");
 const messagesController = require("../controllers/messages.controller");
 const myAreaController = require("../controllers/my-area.controller");
+const reservationController = require("../controllers/reservation.controller");
 
 const SCOPES = ["profile", "email"];
 
@@ -49,6 +50,9 @@ router.post("/properties/edit/:id", fileUploader.array("images", 10), propertyCo
 router.get("/properties/:city", propertyController.getAllProperties);
 router.get("/properties/created/:user", propertyController.getOwnerProperties);
 router.delete("/properties/delete/:id", propertyController.deleteProperty);
+
+//RESERVATION
+router.post("/reserve",  reservationController.createReservation);
 
 //ACCOUNT
 router.get("/account/favs/:user", accountController.getAllFavs);
