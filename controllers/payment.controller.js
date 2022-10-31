@@ -22,6 +22,5 @@ module.exports.loadPaymentScreen = (req, res) => {
             });
         })
         .catch(err => console.log(err))
-    
     })
 }

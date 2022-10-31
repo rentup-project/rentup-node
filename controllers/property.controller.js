@@ -250,6 +250,7 @@ module.exports.getAllProperties = (req, res, next) => {
   } else {
     Property.find({
       address: { $regex: diacriticSensitiveRegex(city), $options: "i" },
+      reserved: false
     })
       .then((props) => {
         res.status(200).json(props);
