@@ -12,7 +12,7 @@ module.exports.completePrequalifications = (req, res, next) => {
 };
 
 module.exports.editPrequalifications = (req, res, next) => {
-  const { user } = req.params;
+ /*  const { user } = req.params;
   const editPrequalifications = {
     ...req.body,
   };
@@ -23,5 +23,5 @@ module.exports.editPrequalifications = (req, res, next) => {
     .then((formCompleted) => {
       res.status(201).json(formCompleted);
     })
-    .catch(next);
+    .catch(next); */
 };

@@ -147,6 +147,10 @@ const PropertySchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    rented: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
