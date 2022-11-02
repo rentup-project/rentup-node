@@ -1,6 +1,16 @@
 const Favourite = require('../models/Favourite.model');
 const mongoose = require("mongoose");
+const Notification = require("../models/Notification.model");
 
+module.exports.getNotifications = (req, res, next) => {
+    const { user } = req.params
+
+    Notification.find({ user })
+    .then((notifications) => {
+        res.json(notifications)
+    })
+    .catch(next);
+};
 
 module.exports.getAllFavs = (req, res, next) => {
     user = mongoose.Types.ObjectId(req.params.user);

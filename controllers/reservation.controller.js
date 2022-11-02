@@ -6,7 +6,6 @@ module.exports.createReservation = (req, res, next) => {
 
     Reservation.create({ user: currentUserId, property: propertyId })
     .then((created) => {
-        console.log('porra')
         Property.findByIdAndUpdate(propertyId, { reserved: true }, { new: true })
         .then((updated) => {
             res.status(201)

@@ -58,7 +58,7 @@ router.post("/reserve",  reservationController.createReservation);
 router.get("/account/favs/:user", accountController.getAllFavs);
 router.get("/account/fav/:property/:user", accountController.getOneFav);
 router.post("/account/favs", accountController.updateFav);
-
+router.get("/account/notifications/:user", accountController.getNotifications)
 
 //PAYMENT
 router.post("/create-payment-intent", paymentController.loadPaymentScreen);
