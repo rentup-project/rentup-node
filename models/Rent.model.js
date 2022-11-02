@@ -18,8 +18,8 @@ const RentSchema = new mongoose.Schema(
         type: Date,
         required: [true, 'Start date of rent is required']
     },
-    duration: {
-        type: String,
+    monthsDuration: {
+        type: Number,
         required: [true, 'Duration of rent is required']
     },
     renewContract: {
@@ -50,7 +50,7 @@ const RentSchema = new mongoose.Schema(
   }
 );
 
-propertySchema.virtual("observation", {
+RentSchema.virtual("observation", {
     ref: "Observation",
     localField: "_id",
     foreignField: "rent",

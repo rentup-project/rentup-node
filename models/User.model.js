@@ -38,19 +38,6 @@ const UserSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
     },
-    annualSalary: {
-      type: String,
-      enum: ["select", "<20K", "<30K", "<40K", "<50K", "<60K", "<70K", ">70K"],
-    },
-    jobDuration: {
-      type: String,
-      enum: [
-        "select",
-        "less than 3 months",
-        "less then a year",
-        "more than a year",
-      ],
-    },
     status: {
       type: Boolean,
       default: false,

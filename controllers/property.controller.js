@@ -1,6 +1,7 @@
 const Property = require("../models/Property.model");
 const User = require("../models/User.model");
 const mongoose = require("mongoose");
+const Rent = require('../models/Rent.model');
 
 module.exports.createProperty = (req, res, next) => {
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
@@ -83,6 +84,24 @@ module.exports.getOwnerProperties = (req, res, next) => {
   Property.find({ owner: user, reserved: false })
     .then((props) => {
       res.status(201).json(props);
+    })
+    .catch(next);
+};
+
+module.exports.getOwnerRents = (req, res, next) => {
+  const { user } = req.params;
+  let rentsToSend = [];
+
+  Property.find({ owner: user, reserved: true })
+    .then((props) => {
+      rentsToSend = [...rentsToSend, ...props]
+      return Rent.find({ userWhoRents: user }).populate("property")
+    })    
+    .then((rents) => { 
+      rents.map(rent => {
+        rentsToSend = [...rentsToSend, rent.property];
+      })    
+      res.status(201).json(rentsToSend);
     })
     .catch(next);
 };

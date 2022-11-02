@@ -49,6 +49,7 @@ router.post("/properties/create", fileUploader.array("images", 10), propertyCont
 router.post("/properties/edit/:id", fileUploader.array("images", 10), propertyController.editProperty);
 router.get("/properties/:city", propertyController.getAllProperties);
 router.get("/properties/created/:user", propertyController.getOwnerProperties);
+router.get("/properties/reserved/:user", propertyController.getOwnerRents);
 router.delete("/properties/delete/:id", propertyController.deleteProperty);
 
 //RESERVATION
