@@ -17,6 +17,36 @@ app.use(logger("dev"));
 app.use(passport.initialize());
 app.use(express.json());
 
+/*SOCKET*/
+const server = require("http").createServer(app);
+const options = { cors: { origin: '*' } };
+const io = require("socket.io")(server, options);
+
+const onlineUsers = [];
+
+const addNewUser = (email, name, socketID) => {
+  !onlineUsers.some((user) => user.email === email) && onlineUsers.push({ email, name, socketID })
+};
+
+const removeUser = (socketID) => {
+  return onlineUsers.forEach((user, index) => {
+    if (user.socketID === socketID) {
+      return onlineUsers.splice(index, 1)
+    }
+  })
+};
+
+io.on("connection", socket => {
+  socket.on('newUser', (user) => {
+    addNewUser(user.email, user.name, socket.id);
+  })
+
+  socket.on('disconnect', () => {
+    removeUser(socket.id)
+  })
+});
+
+
 const routes = require("./config/routes.config");
 app.use("/api", routes);
 
@@ -57,6 +87,6 @@ app.use((error, req, res, next) => {
   res.status(error.status).json(data);
 });
 
-app.listen(process.env.PORT || 3001, () => {
+server.listen(process.env.PORT || 3001, () => {
   console.log("App in process at", process.env.PORT || 3001);
 });

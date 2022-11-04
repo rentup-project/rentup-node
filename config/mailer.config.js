@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const template = require("../templates/mail.template");
+const templateNotification = require("../templates/notification.template");
 
 const transporter = nodemailer.createTransport({
   service: "Gmail",
@@ -17,3 +18,13 @@ module.exports.sendActivationMail = (email, token) => {
     html: template.generateEmail(token),
   });
 };
+
+module.exports.sendNotificationMail = (email) => {
+  transporter.sendMail({
+    from: `Rentup <${process.env.NM_USER}>`,
+    to: email,
+    subject: "You have a new notification",
+    html: templateNotification.generateNotMail(),
+  });
+};
+

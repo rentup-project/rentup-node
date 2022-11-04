@@ -95,6 +95,13 @@ UserSchema.virtual("reservation", {
   justOne: true,
 });
 
+UserSchema.virtual("notification", {
+  ref: "Notification",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
+
 UserSchema.virtual("messages", {
   ref: "Message",
   localField: "_id",

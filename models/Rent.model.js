@@ -22,17 +22,9 @@ const RentSchema = new mongoose.Schema(
         type: Number,
         required: [true, 'Duration of rent is required']
     },
-    renewContract: {
-        type: Boolean,
-        default: false
-    },
     contract: {
         type: String,
         required: [true, 'A contract is required']
-    },
-    bills: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Bill'
     }
   },
   {
