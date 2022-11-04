@@ -49,6 +49,13 @@ RentSchema.virtual("observation", {
     justOne: true,
 });
 
+RentSchema.virtual("bill", {
+    ref: "Bill",
+    localField: "_id",
+    foreignField: "rent",
+    justOne: true,
+});
+
 const Rent = mongoose.model('Rent', RentSchema);
 
 module.exports = Rent;
