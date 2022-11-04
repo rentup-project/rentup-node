@@ -8,11 +8,13 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 require("./config/db.config");
 require("./config/passport.config");
+const passport = require("passport");
 
 const app = express();
 
 app.use(cors());
 app.use(logger("dev"));
+app.use(passport.initialize());
 app.use(express.json());
 
 const routes = require("./config/routes.config");

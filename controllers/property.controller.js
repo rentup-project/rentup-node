@@ -41,6 +41,7 @@ module.exports.createProperty = (req, res, next) => {
 module.exports.editProperty = (req, res, next) => {
   const { id } = req.params;
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
+  console.log('entra en edit')
 
   if (req.body.petAllowed === "Yes") {
     req.body.petAllowed = true;
@@ -81,8 +82,14 @@ module.exports.getOneProperty = (req, res, next) => {
 module.exports.getOwnerProperties = (req, res, next) => {
   const { user } = req.params;
 
-  Property.find({ owner: user, reserved: false })
+  Property.find({
+    $and: [
+    { owner: user },
+    { reserved: false }, 
+    { rented: false }
+    ]})
     .then((props) => {
+      console.log(props)
       res.status(201).json(props);
     })
     .catch(next);
@@ -92,16 +99,20 @@ module.exports.getOwnerRents = (req, res, next) => {
   const { user } = req.params;
   let rentsToSend = [];
 
-  Property.find({ owner: user, reserved: true })
+  Property.find({
+    $and: [
+    { owner: user },
+    { $or: [{ reserved: true }, { rented: true }] }
+    ]})
     .then((props) => {
-      rentsToSend = [...rentsToSend, ...props]
-      return Rent.find({ userWhoRents: user }).populate("property")
-    })    
-    .then((rents) => { 
-      rents.map(rent => {
-        rentsToSend = [...rentsToSend, rent.property];
-      })    
-      res.status(201).json(rentsToSend);
+      rentsToSend = [...rentsToSend, ...props];
+      return Rent.find({ userWhoRents: user }).populate("property");
+    })
+    .then((rents) => {      
+        rents.map((rent) => {
+          rentsToSend = [...rentsToSend, rent.property];
+        });
+        res.status(201).json(rentsToSend);
     })
     .catch(next);
 };

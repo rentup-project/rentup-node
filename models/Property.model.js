@@ -188,6 +188,7 @@ PropertySchema.virtual("reservation", {
     justOne: true,
 });
 
+
 const Property = mongoose.model('Property', PropertySchema);
 
 module.exports = Property;

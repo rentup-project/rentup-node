@@ -37,7 +37,7 @@ module.exports.updateFav = (req, res, next) => {
             if (fav) {
             Favourite.findOneAndDelete({ user, property })
                 .then((favDeleted) => {
-                res.send("deleted");
+                    res.send("deleted");
                 })
                 .catch((err) => next(err));
             } else {

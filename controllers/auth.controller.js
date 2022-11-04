@@ -78,5 +78,22 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.loginGoogle = (req, res, next) => {
-  passport.authenticate("google-auth", res.redirect(process.env.CLIENT_URL));
+  passport.authenticate("google-auth", (err, user, validations) => {
+    if (err) {
+      next(err);
+    } else if (!user) {
+      next(404, "No user found");
+    } else {
+      const token = jwt.sign(
+        {
+          id: user.id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
+      res.redirect(`${process.env.CLIENT_URL}/validation?callbackToken=${token}`);
+    }
+  })(req, res, next);
 };
