@@ -7,7 +7,8 @@ module.exports.getNotifications = (req, res, next) => {
 
     Notification.find({ user })
     .then((notifications) => {
-        res.json(notifications)
+        const sortedNotifications = notifications.sort((a , b) => b.createdAt - a.createdAt)
+        res.json(sortedNotifications);
     })
     .catch(next);
 };

@@ -1,5 +1,6 @@
 const Property = require("../models/Property.model");
 const Reservation = require("../models/Reservation.model");
+const Notification = require("../models/Notification.model");
 
 module.exports.createReservation = (req, res, next) => {
     const { propertyId, currentUserId } = req.body
@@ -7,8 +8,12 @@ module.exports.createReservation = (req, res, next) => {
     Reservation.create({ user: currentUserId, property: propertyId })
     .then((created) => {
         Property.findByIdAndUpdate(propertyId, { reserved: true }, { new: true })
-        .then((updated) => {
-            res.status(201)
+        .populate('owner')
+        .then((propUpdated) => {
+            return Notification.create({ user: propUpdated.owner, type: "reservation" });
+        })
+        .then((notCreated) => {
+            res.status(201);
         })
         .catch((err) => {
             Reservation.findOneAndDelete({ id: created.id})
