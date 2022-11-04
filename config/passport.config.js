@@ -3,25 +3,13 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
 const User = require("../models/User.model");
 
-passport.serializeUser((user, next) => {
-  next(null, user.id);
-});
-
-passport.deserializeUser((id, next) => {
-  User.findById(id)
-    .then((user) => {
-      next(null, user);
-    })
-    .catch((err) => next(err));
-});
-
 passport.use(
   "google-auth",
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "/api/auth/google/callback",
     },
     (accessToken, refreshToken, profile, next) => {
       const googleID = profile.id;

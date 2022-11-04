@@ -41,6 +41,7 @@ module.exports.createProperty = (req, res, next) => {
 module.exports.editProperty = (req, res, next) => {
   const { id } = req.params;
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
+  console.log('entra en edit')
 
   if (req.body.petAllowed === "Yes") {
     req.body.petAllowed = true;
@@ -81,8 +82,14 @@ module.exports.getOneProperty = (req, res, next) => {
 module.exports.getOwnerProperties = (req, res, next) => {
   const { user } = req.params;
 
-  Property.find({ owner: user, reserved: false })
+  Property.find({
+    $and: [
+    { owner: user },
+    { reserved: false }, 
+    { rented: false }
+    ]})
     .then((props) => {
+      console.log(props)
       res.status(201).json(props);
     })
     .catch(next);
@@ -98,7 +105,7 @@ module.exports.getOwnerRents = (req, res, next) => {
     { $or: [{ reserved: true }, { rented: true }] }
     ]})
     .then((props) => {
-      rentsToSend = [...rentsToSend, ...props];
+      rentsToSend = [...rentsToSend, ...props];      
       return Reservation.find({ user }).populate("property");
     })
     .then((reservations) => {  
