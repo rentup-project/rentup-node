@@ -44,8 +44,18 @@ io.on("connection", socket => {
   socket.on('disconnect', () => {
     removeUser(socket.id)
   })
-});
 
+  // NOTIFICATION
+  socket.on("notification", (email) => {
+    const userToNot = onlineUsers.find((user) => {
+      return user.email === email
+    });
+
+    if (userToNot) {
+      io.to(userToNot.socketID).emit("not");
+    }
+  });
+});
 
 const routes = require("./config/routes.config");
 app.use("/api", routes);

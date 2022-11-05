@@ -73,6 +73,7 @@ module.exports.getOneProperty = (req, res, next) => {
   const { id } = req.params;
 
   Property.findById(id)
+    .populate('owner')
     .then((prop) => {
       res.status(201).json(prop);
     })

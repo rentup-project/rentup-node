@@ -26,6 +26,8 @@ module.exports.createMessage = (req, res, next) => {
   Message.create({ sender, receiver, msg })
   .then((created) => {
     res.status(200).json(created)
+    //Agregar acá que si es el nuevo mensaje es a la misma persona 
+    //poner un margen de tiempo de 12hs para volver a crear otra notificación
     Notification.create({ user: receiver, type: 'message' })
     .then(() => {
       User.findOne({ _id: receiver })
