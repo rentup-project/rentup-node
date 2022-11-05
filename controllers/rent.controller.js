@@ -1,7 +1,7 @@
 const Rent = require('../models/Rent.model');
 const Property = require("../models/Property.model");
 
-module.exports.createProperty = (req, res, next) => {
+module.exports.createRent = (req, res, next) => {
     const { userWhoRents, property, pricePerMonth, startDate, monthsDuration } = req.body;
     let contract;
 
@@ -24,5 +24,13 @@ module.exports.createProperty = (req, res, next) => {
         })
         .catch(next);
     })
+    .catch(next);
+}
+
+module.exports.getOneRent = (req, res, next) => {
+    const { id } = req.params;
+
+    Rent.findOne({property: id})
+    .then((rent) => res.status(201).send(rent))
     .catch(next);
 }

@@ -17,16 +17,12 @@ const BillSchema = new mongoose.Schema(
     },
     paymentStatus: {
         type: String,
-        enum: ['payed', 'pending payment'],
+        enum: ['paid', 'pending payment'],
         required: [true, 'Payment status is required']
     },
     dueDate: {
         type: Date,
         required: [true, 'Due date is required']
-    },
-    latePayment: {
-        type: Boolean,
-        default: false
     },
     file: {
         type: String,
@@ -47,13 +43,6 @@ const BillSchema = new mongoose.Schema(
     }
   }
 );
-
-billSchema.virtual("rent", {
-    ref: "Rent",
-    localField: "_id",
-    foreignField: "bills",
-    justOne: false
-});
 
 const Bill = mongoose.model('Bill', BillSchema);
 

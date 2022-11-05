@@ -10,7 +10,8 @@ const accountController = require("../controllers/account.controller");
 const messagesController = require("../controllers/messages.controller");
 const myAreaController = require("../controllers/my-area.controller");
 const reservationController = require("../controllers/reservation.controller");
-const rentController = require("../controllers/rent.controller")
+const rentController = require("../controllers/rent.controller");
+const billController = require("../controllers/bill.controller");
 
 const SCOPES = ["profile", "email"];
 
@@ -81,7 +82,12 @@ router.post("/reserve", reservationController.createReservation);
 router.get("/reserve/cancel/:id", reservationController.cancelReservation);
 
 //RENT
-router.post("/rent/create", fileUploader.single('contract'), rentController.createProperty);
+router.post("/rent/create", fileUploader.single('contract'), rentController.createRent);
+router.get("/rent/:id", rentController.getOneRent);
+
+//BILLS
+router.post("/bills/create", fileUploader.single('file'), billController.createBill)
+router.get("/bills/:id", billController.getBills);
 
 //ACCOUNT
 router.get("/account/favs/:user", accountController.getAllFavs);
