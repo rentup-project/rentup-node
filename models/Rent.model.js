@@ -25,6 +25,10 @@ const RentSchema = new mongoose.Schema(
     contract: {
         type: String,
         required: [true, 'A contract is required']
+    },
+    reviewed: {
+        type: Boolean,
+        default: false
     }
   },
   {

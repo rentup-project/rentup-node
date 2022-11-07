@@ -76,14 +76,17 @@ router.get("/properties/:city", propertyController.getAllProperties);
 router.get("/properties/created/:user", propertyController.getOwnerProperties);
 router.get("/properties/reserved/:user", propertyController.getOwnerRents);
 router.delete("/properties/delete/:id", propertyController.deleteProperty);
+router.get("/property/reviews/:id", propertyController.getReviews);
 
 //RESERVATION
 router.post("/reserve", reservationController.createReservation);
 router.get("/reserve/cancel/:id", reservationController.cancelReservation);
+router.get("/reserve/:id", reservationController.getOneReservation);
 
 //RENT
 router.post("/rent/create", fileUploader.single('contract'), rentController.createRent);
 router.get("/rent/:id", rentController.getOneRent);
+router.get("/rent/userWhoRents/:id", rentController.getUserWhoRents);
 
 //BILLS
 router.post("/bills/create", fileUploader.single('file'), billController.createBill)
@@ -116,5 +119,11 @@ router.post(
   fileUploader.single("image"),
   myAreaController.editUserData
 );
+router.post(
+  "/my-area/review",
+  myAreaController.createReview
+);
+
+router.get("/my-area/review/status/:id", myAreaController.getReviewRent);
 
 module.exports = router;

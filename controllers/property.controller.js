@@ -1,7 +1,9 @@
+const mongoose = require("mongoose");
 const Property = require("../models/Property.model");
 const User = require("../models/User.model");
-const mongoose = require("mongoose");
 const Reservation = require("../models/Reservation.model");
+const Rent = require("../models/Rent.model");
+const Review = require('../models/Review.model.js');
 
 module.exports.createProperty = (req, res, next) => {
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
@@ -41,7 +43,6 @@ module.exports.createProperty = (req, res, next) => {
 module.exports.editProperty = (req, res, next) => {
   const { id } = req.params;
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
-  console.log('entra en edit')
 
   if (req.body.petAllowed === "Yes") {
     req.body.petAllowed = true;
@@ -73,7 +74,7 @@ module.exports.getOneProperty = (req, res, next) => {
   const { id } = req.params;
 
   Property.findById(id)
-    .populate('owner')
+    .populate("owner")
     .then((prop) => {
       res.status(201).json(prop);
     })
@@ -84,13 +85,9 @@ module.exports.getOwnerProperties = (req, res, next) => {
   const { user } = req.params;
 
   Property.find({
-    $and: [
-    { owner: user },
-    { reserved: false }, 
-    { rented: false }
-    ]})
+    $and: [{ owner: user }, { reserved: false }, { rented: false }],
+  })
     .then((props) => {
-      console.log(props)
       res.status(201).json(props);
     })
     .catch(next);
@@ -101,19 +98,17 @@ module.exports.getOwnerRents = (req, res, next) => {
   let rentsToSend = [];
 
   Property.find({
-    $and: [
-    { owner: user },
-    { $or: [{ reserved: true }, { rented: true }] }
-    ]})
+    $and: [{ owner: user }, { $or: [{ reserved: true }, { rented: true }] }],
+  })
     .then((props) => {
-      rentsToSend = [...rentsToSend, ...props];      
+      rentsToSend = [...rentsToSend, ...props];
       return Reservation.find({ user }).populate("property");
     })
-    .then((reservations) => {  
-        reservations.map((rent) => {
-          rentsToSend = [...rentsToSend, rent.property];
-        });
-        res.status(201).json(rentsToSend);
+    .then((reservations) => {
+      reservations.map((rent) => {
+        rentsToSend = [...rentsToSend, rent.property];
+      });
+      res.status(201).json(rentsToSend);
     })
     .catch(next);
 };
@@ -245,7 +240,10 @@ module.exports.getAllProperties = (req, res, next) => {
   const petAllowed = {};
   if (petAllowedInfo === "Allow pets" || petAllowedInfo === "Select") {
     criteria.petAllowed = true;
-  } else if (petAllowedInfo === "Doesn't allow pets" && petAllowedInfo !== "Select") {
+  } else if (
+    petAllowedInfo === "Doesn't allow pets" &&
+    petAllowedInfo !== "Select"
+  ) {
     criteria.petAllowed = false;
   } else if (petAllowedInfo === "Select") {
     criteria.petAllowed = null;
@@ -281,11 +279,21 @@ module.exports.getAllProperties = (req, res, next) => {
   } else {
     Property.find({
       address: { $regex: diacriticSensitiveRegex(city), $options: "i" },
-      reserved: false
+      reserved: false,
     })
       .then((props) => {
         res.status(200).json(props);
       })
       .catch(next);
   }
+};
+
+module.exports.getReviews = (req, res, next) => {
+  const { id } = req.params;
+
+  Review.find({ property: id })
+    .then((reviewsFounded) => {
+      res.status(201).json(reviewsFounded);
+    })
+    .catch(next);
 };
