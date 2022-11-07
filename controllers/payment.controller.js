@@ -1,9 +1,10 @@
 const Property = require("../models/Property.model");
+const Bill = require("../models/Bill.model")
 const StripePackage = require('stripe');
 const stripe = StripePackage(process.env.STRIPE_API_KEY);
 
 
-module.exports.loadPaymentScreen = (req, res) => {
+module.exports.loadReservePaymentScreen = (req, res) => {
     const { id } = req.body;
 
     Property.findOne({ id })
@@ -21,6 +22,36 @@ module.exports.loadPaymentScreen = (req, res) => {
             reservationPrice: property.reservationPrice
             });
         })
-        .catch(err => console.log(err))
+        .catch(next);
     })
+}
+
+module.exports.loadBillsPaymentScreen = (req, res, next) => {
+    const arrWithIds = req.body;
+    
+    let promises = arrWithIds.map(id => {
+        return Bill.findById(id)
+    })
+
+    Promise.all(promises)
+    .then((everyAnswer) => {
+        let sum = 0;
+        everyAnswer.map((bill) => {
+            sum += bill.amount
+        })
+        stripe.paymentIntents.create({
+                amount: sum,
+                currency: "eur",
+                automatic_payment_methods: {
+                    enabled: false,
+                }
+                })
+                .then((paymentIntent) => {
+                    res.send({
+                    clientSecret: paymentIntent.client_secret
+                    });
+                })
+                .catch(next);
+    })
+    .catch(next);
 }

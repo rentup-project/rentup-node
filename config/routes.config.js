@@ -87,7 +87,10 @@ router.get("/rent/:id", rentController.getOneRent);
 
 //BILLS
 router.post("/bills/create", fileUploader.single('file'), billController.createBill)
+router.post("/bills/update", billController.updateManyBills);
 router.get("/bills/:id", billController.getBills);
+router.delete("/bills/delete", billController.deleteManyBills);
+router.delete("/bills/delete/:id", billController.deleteBill);
 
 //ACCOUNT
 router.get("/account/favs/:user", accountController.getAllFavs);
@@ -96,7 +99,8 @@ router.post("/account/favs", accountController.updateFav);
 router.get("/account/notifications/:user", accountController.getNotifications);
 
 //PAYMENT
-router.post("/create-payment-intent", paymentController.loadPaymentScreen);
+router.post("/create-payment-intent/reserve", paymentController.loadReservePaymentScreen);
+router.post("/create-payment-intent/bills", paymentController.loadBillsPaymentScreen);
 
 //MY PERSONAL AREA
 router.get(
