@@ -12,12 +12,17 @@ module.exports.createProperty = (req, res, next) => {
     req.body.petAllowed = false;
   }
 
-  req.body.features = req.body.features.split(",");
+  if(req.body.features && req.body.features.length) {
+    req.body.features = req.body.features.split(",");
+  } else {
+    delete req.body.features
+  }
+
 
   const newProperty = {
     ...req.body,
   };
-
+  
   if (req.files) {
     const paths = req.files.map((file) => {
       return file.path;
@@ -35,13 +40,12 @@ module.exports.createProperty = (req, res, next) => {
     .then((userUpdated) => {
       res.status(200);
     })
-    .catch(next);
+    .catch(err => console.log(err));
 };
 
 module.exports.editProperty = (req, res, next) => {
   const { id } = req.params;
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
-  console.log('entra en edit')
 
   if (req.body.petAllowed === "Yes") {
     req.body.petAllowed = true;
