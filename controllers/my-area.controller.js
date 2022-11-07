@@ -1,6 +1,8 @@
+const mongoose = require("mongoose");
 const Prequalification = require('../models/Prequalification.model');
 const User = require('../models/User.model');
-const mongoose = require("mongoose");
+const Review = require('../models/Review.model.js');
+const Rent = require("../models/Rent.model");
 
 module.exports.getPrequalification = (req, res, next) => {
   const { tenant } = req.params;
@@ -53,6 +55,30 @@ module.exports.editUserData = (req, res, next) => {
   User.findOneAndUpdate(filter, editUser)
     .then((userUpdated) => {
       res.status(201).json(userUpdated);
+    })
+    .catch(next);
+};
+
+module.exports.createReview = (req, res, next) => {
+  req.body.user = mongoose.Types.ObjectId(req.body.user);
+  req.body.property = mongoose.Types.ObjectId(req.body.property);
+
+  Review.create(req.body)
+    .then((reviewCreated) => {
+      return Rent.findOneAndUpdate({ user: req.body.user }, { reviewed: true })
+    })
+    .then((rentedUpdated) => {
+      res.status(201).json({});
+    })
+    .catch(next);
+};
+
+module.exports.getReviewRent = (req, res, next) => {
+  const { id } = req.params;
+
+  Review.find({ property: id })
+    .then((review) => {
+      res.status(201).json(review);
     })
     .catch(next);
 };

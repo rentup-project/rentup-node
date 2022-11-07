@@ -33,9 +33,21 @@ module.exports.cancelReservation = (req, res, next) => {
     .then((deleted) => {
         Property.findByIdAndUpdate(id, { reserved: false }, { new: true })
         .then((updated) => {
-            res.status(201)
+            res.status(201).json({})
         })
         .catch(next);
     })
     .catch(next);
 }
+
+module.exports.getOneReservation = (req, res, next) => {
+  const { id } = req.params;
+
+  Reservation.findOne({ property: id })
+    .populate('property')
+    .populate('user')
+    .then((reserve) => {
+        res.status(201).json(reserve);
+    })
+    .catch(next);
+};

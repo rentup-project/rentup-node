@@ -52,7 +52,20 @@ io.on("connection", socket => {
     });
 
     if (userToNot) {
-      io.to(userToNot.socketID).emit("not");
+      io.to(userToNot.socketID).emit("not");   
+    }
+  });
+
+  // MESSAGES
+  socket.on("message", (email) => {
+    console.log(onlineUsers);
+    const userToNot = onlineUsers.find((user) => {
+      return user.email === email;
+    });
+
+    if (userToNot) {
+      console.log(userToNot, "entra en el back not ");
+      io.to(userToNot.socketID).emit("msg");
     }
   });
 });

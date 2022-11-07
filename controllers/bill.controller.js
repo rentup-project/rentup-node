@@ -1,5 +1,6 @@
 const Rent = require('../models/Rent.model');
 const Bill = require("../models/Bill.model");
+const Notification = require('../models/Notification.model');
 
 module.exports.createBill = (req, res, next) => {
     console.log('entra')
@@ -10,10 +11,17 @@ module.exports.createBill = (req, res, next) => {
         file = req.file.path
     }
 
-    console.log(rent)
-
     Bill.create({ rent, type, amount, paymentStatus, dueDate, file })
-        .then(created => res.status(201).json(created))
+        .then(created => {
+            return Rent.findById(rent)
+        })
+        .then(rentFound => {
+            console.log(rentFound)
+           return Notification.create({user: rentFound.userWhoRents , type: 'billUploaded'})
+        })
+       .then((created) => {
+            res.status(201).json(created)
+        }) 
         .catch(next);
 }
 
