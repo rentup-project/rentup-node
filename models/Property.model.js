@@ -115,6 +115,10 @@ const PropertySchema = new mongoose.Schema(
       type: Number,
       required: [true, "Minimum annual salary requirement is required"],
     },
+    tenantsQuantity: {
+      type: Number,
+      required: [true, "Tenants quantity is required"],
+    },
     petAllowed: {
       type: Boolean,
       default: true,
@@ -139,10 +143,6 @@ const PropertySchema = new mongoose.Schema(
       type: Number,
       required: [true, "Reservation price is required"],
     },
-    requireGuarantee: {
-      type: String,
-      enum: ["None", "1 month", "2 months"],
-    },
     reserved: {
       type: Boolean,
       default: false,
@@ -151,6 +151,16 @@ const PropertySchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    weeklyAvailability: {
+      type: [String],
+      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      required: [true, 'Choose the days of the week that you are available to show your property.']
+    },
+    hourAvailability: {
+      type: String,
+      enum: ['Morning - from 9AM to 12PM', 'Afternoon - from 2PM to 6PM', 'Evening - from 6PM to 9PM'],
+      required: [true, 'Choose the time frame you are available to show your property.']
+    }
   },
   {
     timestamps: true,
@@ -188,7 +198,14 @@ PropertySchema.virtual("reservation", {
     justOne: true,
 });
 
+PropertySchema.virtual("visit", {
+  ref: "Visit",
+  localField: "_id",
+  foreignField: "property",
+  justOne: true,
+});
 
 const Property = mongoose.model('Property', PropertySchema);
 
 module.exports = Property;
+

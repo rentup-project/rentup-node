@@ -12,6 +12,7 @@ const myAreaController = require("../controllers/my-area.controller");
 const reservationController = require("../controllers/reservation.controller");
 const rentController = require("../controllers/rent.controller");
 const billController = require("../controllers/bill.controller");
+const visitsController = require("../controllers/visit.contoller");
 
 const SCOPES = ["profile", "email"];
 
@@ -104,6 +105,9 @@ router.get("/account/notifications/:user", accountController.getNotifications);
 //PAYMENT
 router.post("/create-payment-intent/reserve", paymentController.loadReservePaymentScreen);
 router.post("/create-payment-intent/bills", paymentController.loadBillsPaymentScreen);
+
+//VISITS
+router.get("/visits/:id", visitsController.getVisits);
 
 //MY PERSONAL AREA
 router.get(
