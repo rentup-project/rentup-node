@@ -65,7 +65,7 @@ module.exports.createReview = (req, res, next) => {
 
   Review.create(req.body)
     .then((reviewCreated) => {
-      return Rent.findOneAndUpdate({ user: req.body.user }, { reviewed: true })
+      return Rent.findOneAndUpdate({ property: req.body.property }, { reviewed: true })
     })
     .then((rentedUpdated) => {
       res.status(201).json({});

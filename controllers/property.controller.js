@@ -42,7 +42,7 @@ module.exports.createProperty = (req, res, next) => {
     .then((userUpdated) => {
       res.status(200);
     })
-    .catch(err => console.log(err));
+    .catch(next);
 };
 
 module.exports.editProperty = (req, res, next) => {
@@ -296,7 +296,7 @@ module.exports.getAllProperties = (req, res, next) => {
 module.exports.getReviews = (req, res, next) => {
   const { id } = req.params;
 
-  Review.find({ property: id })
+  Review.find({ property: id }).populate('user')
     .then((reviewsFounded) => {
       res.status(201).json(reviewsFounded);
     })
