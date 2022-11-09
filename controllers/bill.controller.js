@@ -3,7 +3,6 @@ const Bill = require("../models/Bill.model");
 const Notification = require('../models/Notification.model');
 
 module.exports.createBill = (req, res, next) => {
-    console.log('entra')
     const { rent, type, amount, paymentStatus, dueDate } = req.body;
     let file;
 
@@ -16,7 +15,6 @@ module.exports.createBill = (req, res, next) => {
             return Rent.findById(rent)
         })
         .then(rentFound => {
-            console.log(rentFound)
            return Notification.create({user: rentFound.userWhoRents , type: 'billUploaded'})
         })
        .then((created) => {
@@ -58,15 +56,20 @@ module.exports.deleteManyBills = (req, res, next) => {
 }
 
 module.exports.updateManyBills = (req, res, next) => {
-    const { arr } = req.body;
+    const { arr, owner } = req.body;
     const arrWithPromises = [];
+
+    console.log(arr, owner)
     
     arr.forEach(id => {
-        arrWithPromises.push(Bill.findByIdAndUpdate(id, {paymentStatus: 'paid'}))
+        arrWithPromises.push(Bill.findByIdAndUpdate(id, {paymentStatus: 'paid'}).populate('rent'))
     })
 
     Promise.all(arrWithPromises)
     .then((everyAnswer) => {
+        return Notification.create({ user: owner , type: 'billPaid' })
+    })
+    .then((notCreated) => {
         res.status(201).json({})
     })
     .catch(next);

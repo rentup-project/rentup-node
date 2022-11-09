@@ -33,7 +33,7 @@ module.exports.createRent = (req, res, next) => {
 module.exports.getOneRent = (req, res, next) => {
     const { id } = req.params;
 
-    Rent.findOne({property: id})
+    Rent.findOne({ property: id })
     .then((rent) => res.status(201).send(rent))
     .catch(next);
 }

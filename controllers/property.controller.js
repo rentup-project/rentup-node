@@ -181,7 +181,7 @@ module.exports.deleteProperty = (req, res, next) => {
             res.status(201);
           })
           .catch(next);
-      }
+      } 
     })
     .catch(next);
 };
@@ -339,6 +339,17 @@ module.exports.getReviews = (req, res, next) => {
   Review.find({ property: id }).populate('user')
     .then((reviewsFounded) => {
       res.status(201).json(reviewsFounded);
+    })
+    .catch(next);
+};
+
+module.exports.getOwnerProperty = (req, res, next) => {
+  const { id } = req.params;
+  
+  Property.findById(id)
+    .populate("owner")
+    .then((prop) => {
+      res.status(201).send(prop.owner)
     })
     .catch(next);
 };
