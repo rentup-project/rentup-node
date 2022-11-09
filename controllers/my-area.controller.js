@@ -3,6 +3,7 @@ const Prequalification = require('../models/Prequalification.model');
 const User = require('../models/User.model');
 const Review = require('../models/Review.model.js');
 const Rent = require("../models/Rent.model");
+const createError = require("http-errors");
 
 module.exports.getPrequalification = (req, res, next) => {
   const { tenant } = req.params;
@@ -42,21 +43,22 @@ module.exports.editPrequalification = (req, res, next) => {
 
 module.exports.editUserData = (req, res, next) => {
   const { user } = req.params;
-  const filter = { "_id": user };
-
-  const image = req.file.path;
+  const filter = { _id: user };
 
   const editUser = {
     ...req.body,
-    image,
     _id: user,
   };
+
+  if (req.file) {
+    editUser.image = req.file.path;
+  }
 
   User.findOneAndUpdate(filter, editUser)
     .then((userUpdated) => {
       res.status(201).json(userUpdated);
     })
-    .catch(next);
+    .catch((err) => next(err));
 };
 
 module.exports.createReview = (req, res, next) => {
@@ -65,7 +67,7 @@ module.exports.createReview = (req, res, next) => {
 
   Review.create(req.body)
     .then((reviewCreated) => {
-      return Rent.findOneAndUpdate({ user: req.body.user }, { reviewed: true })
+      return Rent.findOneAndUpdate({ property: req.body.property }, { reviewed: true })
     })
     .then((rentedUpdated) => {
       res.status(201).json({});

@@ -115,6 +115,11 @@ const PropertySchema = new mongoose.Schema(
       type: Number,
       required: [true, "Minimum annual salary requirement is required"],
     },
+    tenantsQuantity: {
+      type: Number,
+      min: 1,
+      required: [true, "Tenants quantity is required"],
+    },
     petAllowed: {
       type: Boolean,
       default: true,
@@ -138,10 +143,6 @@ const PropertySchema = new mongoose.Schema(
     reservationPrice: {
       type: Number,
       required: [true, "Reservation price is required"],
-    },
-    requireGuarantee: {
-      type: String,
-      enum: ["None", "1 month", "2 months"],
     },
     reserved: {
       type: Boolean,
