@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const Property = require("../models/Property.model");
 const User = require("../models/User.model");
 const Reservation = require("../models/Reservation.model");
-const Rent = require("../models/Rent.model");
 const Review = require('../models/Review.model.js');
+const Visit = require('../models/Visit.model');
 
 module.exports.createProperty = (req, res, next) => {
   req.body.owner = mongoose.Types.ObjectId(req.body.owner);
@@ -20,6 +20,16 @@ module.exports.createProperty = (req, res, next) => {
     delete req.body.features
   }
 
+  let weeklyAvail;
+  let hours;
+
+  if(req.body.weeklyAvailability && req.body.weeklyAvailability.length) {
+    req.body.weeklyAvailability = req.body.weeklyAvailability.split(",");
+    weeklyAvail = req.body.weeklyAvailability
+    hours = req.body.hourAvailability
+  } else {
+    delete req.body.weeklyAvailability
+  }
 
   const newProperty = {
     ...req.body,
@@ -34,13 +44,43 @@ module.exports.createProperty = (req, res, next) => {
 
   Property.create(newProperty)
     .then((prop) => {
-      res.status(200).json(prop);
       const filter = { _id: prop.owner };
       const update = { type: "tenant&owner" };
-      return User.findOneAndUpdate(filter, update);
-    })
-    .then((userUpdated) => {
-      res.status(200);
+      User.findOneAndUpdate(filter, update)
+      .then((userUpdated) => {
+
+        let slots;
+        if(weeklyAvail.length > 0 && hours) {
+          if(req.body.hourAvailability === 'Morning - from 9AM to 12PM') {
+            slots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30']
+          } else if (req.body.hourAvailability === 'Afternoon - from 2PM to 6PM') {
+            slots =  ['14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
+          } else {
+            slots = ['18:00', '18:30', '19:00', '19:30', '20:00', '20:30']
+          }
+
+          let promiseArr = []
+          weeklyAvail.map((day) => {
+            slots.map((time) => {
+              promiseArr.push(Visit.create({
+                property: prop.id,
+                day,
+                hour: time
+              }))
+            })
+          })
+
+          Promise.all(promiseArr)
+          .then((resolved) => {
+            res.status(200).json(prop);
+          })
+          .catch(next);
+
+        } else {
+          res.status(200).json(prop);
+        }
+      })
+      .catch(next);
     })
     .catch(next);
 };
