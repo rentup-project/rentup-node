@@ -23,12 +23,7 @@ const PrequalificationSchema = new mongoose.Schema(
     annualSalary: {
       type: Number,
       required: [true, "Annual salary is required"],
-    },
-    hasGuarantee: {
-      type: String,
-      enum: ["None", "1 month", "2 months"],
-      required: [true, "Guarantee is required"],
-    },
+    }
   },
   {
     timestamps: true,

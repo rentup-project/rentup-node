@@ -100,6 +100,7 @@ router.delete("/bills/delete/:id", billController.deleteBill);
 router.get("/account/favs/:user", accountController.getAllFavs);
 router.get("/account/fav/:property/:user", accountController.getOneFav);
 router.post("/account/favs", accountController.updateFav);
+router.delete("/account/fav/delete/:property/:user", accountController.deleteOneFav);
 router.get("/account/notifications/:user", accountController.getNotifications);
 
 //PAYMENT

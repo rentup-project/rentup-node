@@ -117,6 +117,7 @@ const PropertySchema = new mongoose.Schema(
     },
     tenantsQuantity: {
       type: Number,
+      min: 1,
       required: [true, "Tenants quantity is required"],
     },
     petAllowed: {

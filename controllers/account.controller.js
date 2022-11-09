@@ -61,3 +61,15 @@ module.exports.updateFav = (req, res, next) => {
         })
         .catch((err) => next(err));
 };
+
+module.exports.deleteOneFav = (req, res, next) => {   
+    user = mongoose.Types.ObjectId(req.params.user);
+    property = mongoose.Types.ObjectId(req.params.property);
+    
+    Favourite.findOneAndDelete({ user, property })
+      .then((favDeleted) => {
+        res.send(favDeleted);
+      })
+      .catch((err) => next(err));
+}
+

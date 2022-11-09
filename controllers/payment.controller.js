@@ -4,7 +4,7 @@ const StripePackage = require('stripe');
 const stripe = StripePackage(process.env.STRIPE_API_KEY);
 
 
-module.exports.loadReservePaymentScreen = (req, res) => {
+module.exports.loadReservePaymentScreen = (req, res, next) => {
     const { id } = req.body;
 
     Property.findOne({ id })
