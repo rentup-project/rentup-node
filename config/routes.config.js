@@ -79,6 +79,7 @@ router.get("/properties/created/:user", propertyController.getOwnerProperties);
 router.get("/properties/reserved/:user", propertyController.getOwnerRents);
 router.delete("/properties/delete/:id", propertyController.deleteProperty);
 router.get("/property/reviews/:id", propertyController.getReviews);
+router.get("/property/owner/:id", propertyController.getOwnerProperty);
 
 //RESERVATION
 router.post("/reserve", reservationController.createReservation);

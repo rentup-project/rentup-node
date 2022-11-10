@@ -64,7 +64,7 @@ io.on("connection", socket => {
     });
 
     if (userToNot) {
-      console.log(userToNot, "entra en el back not ");
+      console.log(userToNot, "entra en el back para emitir msg ");
       io.to(userToNot.socketID).emit("msg");
     }
   });
