@@ -110,6 +110,6 @@ app.use((error, req, res, next) => {
   res.status(error.status).json(data);
 });
 
-server.listen(process.env.PORT || 3001, () => {
-  console.log("App in process at", process.env.PORT || 3001);
+server.listen(process.env.SERVER_URL || 3001, () => {
+  console.log("App in process at", process.env.SERVER_URL || 3001);
 });
