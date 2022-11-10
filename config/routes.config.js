@@ -73,6 +73,7 @@ router.post(
   fileUploader.array("images", 10),
   propertyController.editProperty
 );
+router.get("/properties/last", propertyController.lastProperties);
 router.get("/properties/:city", propertyController.getAllProperties);
 router.get("/properties/created/:user", propertyController.getOwnerProperties);
 router.get("/properties/reserved/:user", propertyController.getOwnerRents);
@@ -109,7 +110,10 @@ router.post("/create-payment-intent/reserve", paymentController.loadReservePayme
 router.post("/create-payment-intent/bills", paymentController.loadBillsPaymentScreen);
 
 //VISITS
+router.get("/visits/user/:id", visitsController.getUserVisits);
 router.get("/visits/:id", visitsController.getVisits);
+router.get("/visits/:visitId/:currentUserId/:propertyId", visitsController.reserveVisit);
+router.delete("/visits/:id", visitsController.deleteVisit);
 
 //MY PERSONAL AREA
 router.get(

@@ -343,13 +343,21 @@ module.exports.getReviews = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.lastProperties = (req, res, next) => {
+  Property.find()
+    .sort({ $natural: -1 })
+    .limit(3)
+    .then((props) => res.status(201).json(props))
+    .catch(next);
+};
+
 module.exports.getOwnerProperty = (req, res, next) => {
   const { id } = req.params;
-  
+
   Property.findById(id)
     .populate("owner")
     .then((prop) => {
-      res.status(201).send(prop.owner)
+      res.status(201).send(prop.owner);
     })
     .catch(next);
 };
