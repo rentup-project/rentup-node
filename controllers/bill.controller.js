@@ -58,8 +58,6 @@ module.exports.deleteManyBills = (req, res, next) => {
 module.exports.updateManyBills = (req, res, next) => {
     const { arr, owner } = req.body;
     const arrWithPromises = [];
-
-    console.log(arr, owner)
     
     arr.forEach(id => {
         arrWithPromises.push(Bill.findByIdAndUpdate(id, {paymentStatus: 'paid'}).populate('rent'))

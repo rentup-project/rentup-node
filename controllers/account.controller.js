@@ -17,11 +17,14 @@ module.exports.getAllFavs = (req, res, next) => {
     user = mongoose.Types.ObjectId(req.params.user);
 
     Favourite.find({ user })
-        .populate('property')
-        .then((favs) => {
-            res.status(201).json(favs);
+    .populate('property')
+    .then((favs) => {
+        const filtered = favs.filter((fav) => {
+            !fav.property.reserved
         })
-        .catch(next);
+        res.status(201).json(filtered);
+    })
+    .catch(next);
 }
 
 module.exports.getOneFav = (req, res, next) => {
