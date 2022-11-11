@@ -199,8 +199,8 @@ module.exports.generateNotMail = () => {
             
       <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
     <div align="center">
-      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:3000/" style="height:37px; v-text-anchor:middle; width:430px;" arcsize="21.5%"  stroke="f" fillcolor="#222222"><w:anchorlock/><center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;"><![endif]-->  
-        <a href="http://localhost:3000/notifications" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #222222; border-radius: 8px;-webkit-border-radius: 8px; -moz-border-radius: 8px; width:100%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
+      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${process.env.HOST}" style="height:37px; v-text-anchor:middle; width:430px;" arcsize="21.5%"  stroke="f" fillcolor="#222222"><w:anchorlock/><center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;"><![endif]-->  
+        <a href="${process.env.HOST}/notifications" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #222222; border-radius: 8px;-webkit-border-radius: 8px; -moz-border-radius: 8px; width:100%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
           <span class="v-line-height v-padding" style="display:block;padding:10px 20px;line-height:120%;"><span style="font-size: 14px; line-height: 22.4px;">GO!</span></span>
         </a>
       <!--[if mso]></center></v:roundrect><![endif]-->
