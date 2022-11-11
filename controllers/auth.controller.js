@@ -15,16 +15,16 @@ module.exports.register = (req, res, next) => {
 
 module.exports.activateAccount = (req, res, next) => {
   const token = req.params.token;
-
+  
   User.findOneAndUpdate(
     { activationToken: token, status: false },
     { status: true }
   )
     .then((user) => {
       if (user) {
-        res.send(202);
+        res.sendStatus(202)
       } else {
-        res.send(401);
+        res.sendStatus(401)
       }
     })
     .catch(next);
