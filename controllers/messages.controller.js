@@ -55,22 +55,25 @@ module.exports.selectUser = (req, res, next) => {
     id: 1
   })
   .then((messages) => {
-    if(messages) {
+    let listWithoutDuplicates = []
+    let listWithoutSelfUser = []
+
+    if(messages.length > 0) {
       messages.forEach((message) => {
         usersArr.push(message.receiver);
         usersArr.push(message.sender)
       })
-    };
 
-    let listWithoutDuplicates = usersArr.filter((value, index, array) =>
-      index === array.findIndex((t) => (
-        t.id === value.id
-      ))
-    )
-    
-    let listWithoutSelfUser = listWithoutDuplicates.filter((user) => 
-      user.id !== currentUser
-    )
+      listWithoutDuplicates = usersArr.filter((value, index, array) =>
+        index === array.findIndex((t) => (
+          t.id === value.id
+        ))
+      )
+      
+      listWithoutSelfUser = listWithoutDuplicates.filter((user) => 
+        user.id !== currentUser
+      )
+    };
 
     res.json(listWithoutSelfUser)
   })
