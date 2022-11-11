@@ -14,13 +14,13 @@ module.exports.getNotifications = (req, res, next) => {
 };
 
 module.exports.getAllFavs = (req, res, next) => {
-    user = mongoose.Types.ObjectId(req.params.user);
+    const { user } = req.params;
 
     Favourite.find({ user })
     .populate('property')
     .then((favs) => {
         const filtered = favs.filter((fav) => {
-            !fav.property.reserved
+           return fav.property.reserved === false
         })
         res.status(201).json(filtered);
     })
