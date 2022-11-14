@@ -142,6 +142,7 @@ const PropertySchema = new mongoose.Schema(
     },
     reservationPrice: {
       type: Number,
+      min: 50,
       required: [true, "Reservation price is required"],
     },
     reserved: {
