@@ -37,21 +37,19 @@ module.exports.loadBillsPaymentScreen = (req, res, next) => {
     .then((everyAnswer) => {
         let sum = 0;
         everyAnswer.map((bill) => {
-            sum += bill.amount
+            sum += bill.amount;
+        });
+
+        return stripe.paymentIntents.create({
+            amount: sum,
+            currency: "eur",
+            automatic_payment_methods: {
+                enabled: false,
+            }
         })
-        stripe.paymentIntents.create({
-                amount: sum,
-                currency: "eur",
-                automatic_payment_methods: {
-                    enabled: false,
-                }
-                })
-                .then((paymentIntent) => {
-                    res.send({
-                    clientSecret: paymentIntent.client_secret
-                    });
-                })
-                .catch(next);
+    })
+    .then((paymentIntent) => {
+        res.send({clientSecret: paymentIntent.client_secret});
     })
     .catch(next);
 }

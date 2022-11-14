@@ -3,8 +3,6 @@ const Visit = require('../models/Visit.model');
 module.exports.getVisits = (req, res, next) => {
     const { id } = req.params
 
-    console.log('entra', id)
-
     Visit.find({ property: id})
     .then((visits) => {
         res.status(201).json(visits)
@@ -34,7 +32,6 @@ module.exports.reserveVisit = (req, res, next) => {
             })
             .catch(next)
         } else {
-            console.log('entra else')
             res.status(201).json({'message': 'This time slot is already reserved'})
         }
     })
@@ -44,7 +41,7 @@ module.exports.reserveVisit = (req, res, next) => {
 module.exports.getUserVisits = (req, res, next) => {
     const { id } = req.params
 
-    Visit.find({userWhoVisits: id})
+    Visit.find({userWhoVisits: id, reserved: true})
     .populate('property')
     .then(visits => res.status(201).json(visits)
     )
@@ -53,10 +50,6 @@ module.exports.getUserVisits = (req, res, next) => {
 
 module.exports.deleteVisit = async (req, res, next) => {
     const { id } = req.params
-
-    const visit = await Visit.findOne({id})
-    visit.userWhoVisits = undefined
-    await visit.save()
 
     Visit.findByIdAndUpdate(id, {reserved: false})
     .then(updated => {

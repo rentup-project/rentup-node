@@ -76,9 +76,9 @@ module.exports.createReview = (req, res, next) => {
 };
 
 module.exports.getReviewRent = (req, res, next) => {
-  const { id } = req.params;
+  const { id, user } = req.params;
 
-  Review.find({ property: id })
+  Review.find({ property: id, user })
     .then((review) => {
       res.status(201).json(review);
     })

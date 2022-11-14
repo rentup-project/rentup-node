@@ -138,6 +138,6 @@ router.post(
   myAreaController.createReview
 );
 
-router.get("/my-area/review/status/:id", myAreaController.getReviewRent);
+router.get("/my-area/review/status/:id/:user", myAreaController.getReviewRent);
 
 module.exports = router;

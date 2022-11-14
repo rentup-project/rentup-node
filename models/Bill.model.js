@@ -13,6 +13,7 @@ const BillSchema = new mongoose.Schema(
     },
     amount: {
         type: Number,
+        min: 50,
         required: [true, 'The total amount of the bill is required']
     },
     paymentStatus: {
