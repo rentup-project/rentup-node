@@ -93,7 +93,7 @@ const PropertySchema = new mongoose.Schema(
       enum: [
         "Pool",
         "Air conditioning",
-        "Lyft",
+        "Lift",
         "Built-in cabinets",
         "Boxroom",
         "Parking",
