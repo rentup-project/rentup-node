@@ -58,13 +58,11 @@ io.on("connection", socket => {
 
   // MESSAGES
   socket.on("message", (email) => {
-    console.log(onlineUsers);
-    const userToNot = onlineUsers.find((user) => {
+      const userToNot = onlineUsers.find((user) => {
       return user.email === email;
     });
 
     if (userToNot) {
-      console.log(userToNot, "entra en el back para emitir msg ");
       io.to(userToNot.socketID).emit("msg");
     }
   });
